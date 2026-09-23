@@ -1,0 +1,29 @@
+---
+/** Service detail template — one static page per record in `data/services.ts`. */
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import ServiceDetail from '../../components/sections/ServiceDetail.astro';
+import { services, type Service } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<Base title={`${service.title} — Solor`} description={service.excerpt}>
+  <PageHero
+    title={service.title}
+    crumbs={[{ label: 'Services', href: '/services' }, { label: service.title }]}
+  />
+
+  <ServiceDetail service={service} />
+</Base>

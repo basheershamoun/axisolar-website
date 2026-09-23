@@ -1,0 +1,212 @@
+---
+/**
+ * About page opener — stacked image collage on the left, heading, copy and a
+ * two-column benefit checklist on the right. Mirrors the original
+ * "About Green Energy Solar" section.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  paragraphs?: string[];
+  points?: string[];
+  image?: string;
+  imageAlt?: string;
+  inset?: string;
+  insetAlt?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  eyebrow = 'About Us',
+  title = 'About Green Energy Solar',
+  paragraphs = [
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.',
+    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+  ],
+  points = [
+    'Solar Inverter Setup',
+    'Battery Storage Solutions',
+    'Solar Material Financing',
+    '24 X 7 Call & Chat Support',
+    'Proven Track Record',
+    'Customer-Centric Approach',
+  ],
+  image = '/images/about-1.jpg',
+  imageAlt = 'Solar array at sunrise on a clear morning',
+  inset = '/images/about-2.jpg',
+  insetAlt = 'Roof-mounted solar panels on a modern house',
+  ctaLabel = 'Get A Free Quote',
+  ctaHref = '/contact',
+} = Astro.props;
+---
+
+<section class="about-intro section">
+  <div class="container-site about-intro__grid">
+    <div class="about-intro__media">
+      <span class="about-intro__dots" aria-hidden="true"></span>
+
+      <div class="reveal-image about-intro__frame">
+        <img
+          src={image}
+          alt={imageAlt}
+          width="640"
+          height="560"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="reveal-image about-intro__frame about-intro__frame--inset">
+        <img
+          src={inset}
+          alt={insetAlt}
+          width="360"
+          height="280"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <div class="about-intro__body">
+      <SectionHeading eyebrow={eyebrow} title={title} />
+
+      {paragraphs.map((p, i) => (
+        <p class="about-intro__text" data-anim="up" data-anim-delay={`${0.1 + i * 0.1}`}>{p}</p>
+      ))}
+
+      <ul class="about-intro__points" data-anim="up" data-anim-delay="0.3">
+        {points.map((point) => (
+          <li>
+            <span class="about-intro__tick" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            {point}
+          </li>
+        ))}
+      </ul>
+
+      {ctaLabel && (
+        <div class="about-intro__cta" data-anim="up" data-anim-delay="0.4">
+          <Button href={ctaHref}>{ctaLabel}</Button>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-intro__grid {
+    display: grid;
+    gap: 3.75rem;
+    align-items: center;
+  }
+
+  /* ---------- media ---------- */
+  .about-intro__media {
+    position: relative;
+    padding-bottom: 4.5rem;
+  }
+
+  .about-intro__frame {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .about-intro__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-intro__frame--inset {
+    width: 58%;
+    margin-top: -4.5rem;
+    margin-left: auto;
+    border: 0.625rem solid var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Dot grid echoing the original's decorative pattern. */
+  .about-intro__dots {
+    position: absolute;
+    top: -1.25rem;
+    right: -1.25rem;
+    width: 9rem;
+    height: 9rem;
+    background-image: radial-gradient(var(--color-accent) 1.5px, transparent 1.6px);
+    background-size: 1rem 1rem;
+    opacity: 0.55;
+  }
+
+  /* The pattern is deliberately offset past the image edge, which overhangs the
+     viewport on small screens. Pull it back inside below 36rem — it is purely
+     decorative, so losing the overhang costs nothing. */
+  @media (max-width: 36rem) {
+    .about-intro__dots {
+      right: 0;
+      top: -0.75rem;
+      width: 6rem;
+      height: 6rem;
+    }
+  }
+
+  /* ---------- body ---------- */
+  .about-intro__text {
+    color: var(--color-text);
+    margin-bottom: 1.25rem;
+  }
+
+  .about-intro__points {
+    display: grid;
+    gap: 0.875rem 2rem;
+    margin: 1.75rem 0 0;
+  }
+  .about-intro__points li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+
+  .about-intro__tick {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .about-intro__tick svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .about-intro__cta { margin-top: 2.25rem; }
+
+  @media (min-width: 576px) {
+    .about-intro__points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 992px) {
+    .about-intro__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .about-intro__media { padding-bottom: 0; }
+    .about-intro__frame--inset {
+      position: absolute;
+      right: -2.5rem;
+      bottom: -2.5rem;
+      width: 55%;
+      margin: 0;
+    }
+  }
+</style>

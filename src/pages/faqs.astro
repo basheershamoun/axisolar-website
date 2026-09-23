@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import FaqAccordion from '../components/sections/FaqAccordion.astro';
+import { faqs } from '../data/faqs';
+---
+
+<Base
+  title="FAQs — Solor"
+  description="Answers to the questions we are asked most about solar panels, inverters, permitting, installation and renewable energy in general."
+>
+  {/* PageHero owns the page's single <h1>. */}
+  <PageHero title="FAQs" crumbs={[{ label: 'FAQs' }]} />
+
+  <section class="section faqs" aria-label="Frequently asked questions">
+    <div class="container-site">
+      <FaqAccordion items={faqs} name="solor-faqs" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* The original page runs the accordion straight under the banner with no
+     section heading, so the section only supplies rhythm. */
+  .faqs {
+    background: var(--color-bg);
+  }
+</style>

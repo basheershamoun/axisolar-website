@@ -1,0 +1,138 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* =========================================================================
+   Bridge the design tokens into Tailwind v4's theme so utilities like
+   `bg-accent`, `text-heading`, `font-display` generate from the SAME
+   variables declared in tokens.css. One source of truth, two consumers.
+   ========================================================================= */
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --color-secondary: var(--color-secondary);
+  --color-forest: var(--color-forest);
+  --color-lime: var(--color-lime);
+  --color-mist: var(--color-mist);
+  --color-slate: var(--color-slate);
+  --color-ink: var(--color-ink);
+  --color-charcoal: var(--color-charcoal);
+  --color-citron: var(--color-citron);
+  --color-parchment: var(--color-parchment);
+  --color-heading: var(--color-heading);
+  --color-body: var(--color-text);
+  --color-bg-alt: var(--color-bg-alt);
+  --color-bg-dark: var(--color-bg-dark);
+  --color-line: var(--color-border);
+  --color-line-dark: var(--color-border-dark);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --radius-pill: var(--radius-pill);
+  --radius-card: var(--radius-lg);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
+
+  --ease-out: var(--ease-out);
+
+  --container-site: var(--container-max);
+}
+
+/* ========================================================================= */
+@layer base {
+  *,
+  *::before,
+  *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-body);
+    line-height: var(--leading-body);
+    color: var(--color-text);
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    color: var(--color-heading);
+  }
+
+  h1 { font-size: var(--text-h1); }
+  h2 { font-size: var(--text-h2); }
+  h3 { font-size: var(--text-h3); }
+  h4 { font-size: var(--text-h4); }
+  h5 { font-size: var(--text-h5); }
+  h6 { font-size: var(--text-h6); }
+
+  p { margin: 0 0 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: inherit; text-decoration: none; transition: color var(--dur-fast) var(--ease-out); }
+  img, svg, video { display: block; max-width: 100%; height: auto; }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+}
+
+/* =========================================================================
+   Motion primitives.
+   Elements start hidden ONLY when JS is available to reveal them, so the
+   page stays fully readable if the script never runs.
+   ========================================================================= */
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: calc(var(--container-max) + var(--container-pad) * 2);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+
+  .section { padding-block: var(--section-py); }
+
+  /* Image reveal: wrapper slides in from the left while the image slides
+     in from the right — recreates the original GSAP xPercent pair. */
+  .reveal-image {
+    position: relative;
+    overflow: hidden;
+    visibility: hidden;
+  }
+  .reveal-image > img { transform-origin: center; }
+
+  /* Split-text targets. Spans are emitted at BUILD time by SplitText.astro,
+     so there is zero runtime DOM work and no layout shift. */
+  .split-word,
+  .split-char {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal-image { visibility: visible !important; }
+}

@@ -1,0 +1,156 @@
+---
+/**
+ * "Energy progress" — copy on the left, animated skill bars on the right.
+ *
+ * The bars are driven entirely by markup so the motion layer stays generic:
+ * `data-progress="<n>"` on the fill, `data-progress-label` on the percentage.
+ * The label must live inside the track (the initialiser looks for it on the
+ * fill's parent). Widths render at 0 and are animated in on scroll; under
+ * `prefers-reduced-motion` they are set straight to their final value.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Skill {
+  label: string;
+  value: number;
+}
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  skills?: Skill[];
+  class?: string;
+}
+
+const {
+  eyebrow = 'Energy progress',
+  title = 'Best Solution For Your Solar Energy',
+  text = 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+  skills = [
+    { label: 'Solar Panels', value: 95 },
+    { label: 'Hybrid Energy', value: 80 },
+    { label: 'Marketing', value: 70 },
+  ],
+  class: className = '',
+} = Astro.props;
+---
+
+<section class:list={['skills', 'section', className]} aria-label={title}>
+  <div class="container-site skills__inner">
+    <SectionHeading eyebrow={eyebrow} title={title} text={text} class="skills__head" />
+
+    <div class="skills__bars">
+      {
+        skills.map((skill, i) => (
+          <div class="skills__row" data-anim="up" data-anim-delay={(0.1 + i * 0.12).toFixed(2)}>
+            <div class="skills__meta">
+              <h3 class="skills__label">{skill.label}</h3>
+            </div>
+            <div
+              class="skills__track"
+              role="progressbar"
+              aria-label={skill.label}
+              aria-valuenow={skill.value}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <span
+                class="skills__fill"
+                data-progress={skill.value}
+                style={`--skill-value:${skill.value}%`}
+              />
+              <span class="skills__value" data-progress-label aria-hidden="true">
+                {skill.value}%
+              </span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills {
+    background: var(--color-bg);
+  }
+
+  .skills__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 5rem;
+  }
+
+  .skills__inner :global(.skills__head) {
+    max-width: none;
+  }
+
+  .skills__bars {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .skills__row {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .skills__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .skills__label {
+    margin: 0;
+    font-size: var(--text-h5);
+    color: var(--color-heading);
+  }
+
+  /* The track is the positioning context for BOTH the fill and the label —
+     the progress initialiser looks the label up on the fill's parent. */
+  .skills__track {
+    position: relative;
+    height: 0.375rem;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-pill);
+  }
+
+  /* Inline --skill-value keeps the bars correct with JS disabled; the motion
+     layer overrides `width` inline when it animates them in. */
+  .skills__fill {
+    display: block;
+    width: var(--skill-value, 0);
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: var(--radius-pill);
+  }
+
+  .skills__value {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 0.75rem);
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 1199px) {
+    .skills__inner { gap: 3rem; }
+  }
+
+  @media (max-width: 991px) {
+    .skills__inner { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+  }
+
+  @media (max-width: 575px) {
+    .skills__bars { gap: 1.75rem; }
+    .skills__label { font-size: var(--text-h6); }
+    .skills__value { font-size: var(--text-base); }
+  }
+</style>

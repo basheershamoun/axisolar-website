@@ -1,0 +1,506 @@
+---
+/**
+ * Service detail body: sticky sidebar (all services + a contact card) beside
+ * the long-form column — copy, imagery, the benefits grid, the planning block
+ * and the FAQ accordion.
+ */
+import { services, icons, type Service } from '../../data/services';
+import { site } from '../../data/site';
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+
+/* The original theme lists the sidebar alphabetically rather than in grid order. */
+const sidebarItems = [...services].sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<section class="sd section">
+  <div class="container-site sd__grid">
+    <!-- ------------------------------------------------------- sidebar -->
+    <aside class="sd__aside">
+      <nav class="sd-list" aria-label="All services">
+        <h2 class="sd-visually-hidden">All services</h2>
+        <ul>
+          {
+            sidebarItems.map((item) => {
+              const current = item.slug === service.slug;
+              return (
+                <li>
+                  <a
+                    href={`/services/${item.slug}/`}
+                    class:list={['sd-list__link', current && 'is-current']}
+                    aria-current={current ? 'page' : undefined}
+                  >
+                    <svg
+                      class="sd-list__mark"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      set:html={icons.leaf}
+                    />
+                    <span>{item.title}</span>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+
+      <div class="sd-help" data-anim="up">
+        <div class="sd-help__media">
+          <img
+            src="/images/service-cta.jpg"
+            alt="Solor engineer working on a rooftop installation"
+            width="600"
+            height="420"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="sd-help__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 6.1 6.1l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z" />
+            </svg>
+          </span>
+        </div>
+        <div class="sd-help__body">
+          <p class="sd-help__label">Get Professional Help</p>
+          <a class="sd-help__phone" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ---------------------------------------------------------- main -->
+    <div class="sd__main">
+      <div class="reveal-image sd__hero">
+        <img
+          src={service.image}
+          alt={service.imageAlt}
+          width="1000"
+          height="560"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+
+      {
+        service.body.map((block) => (
+          <div class="sd__block">
+            {block.heading && (
+              <h2 class="sd__heading" data-anim="up">
+                {block.heading}
+              </h2>
+            )}
+            {block.paragraphs.map((p) => (
+              <p class="sd__copy" data-anim="up">
+                {p}
+              </p>
+            ))}
+            {block.image && (
+              <div class="reveal-image sd__figure">
+                <img
+                  src={block.image}
+                  alt={block.imageAlt ?? ''}
+                  width="1000"
+                  height="520"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+          </div>
+        ))
+      }
+
+      <!-- benefits grid -->
+      <h2 class="sd__heading" data-anim="up">Benefits of {service.title}</h2>
+      <ul class="sd-benefits">
+        {
+          service.highlights.map((h, i) => (
+            <li class="sd-benefit" data-anim="up" data-anim-delay={`${(i % 3) * 0.1}`}>
+              <span class="sd-benefit__icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={icons[h.icon]}
+                />
+              </span>
+              <h3 class="sd-benefit__title">{h.title}</h3>
+              <p class="sd-benefit__text">{h.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- planning & strategy -->
+      <div class="sd-plan">
+        <div class="reveal-image sd-plan__media">
+          <img
+            src={service.planning.image}
+            alt={service.planning.imageAlt}
+            width="600"
+            height="480"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="sd-plan__body">
+          <h2 class="sd__heading" data-anim="up">{service.planning.title}</h2>
+          <p class="sd__copy" data-anim="up">{service.planning.text}</p>
+          <ul class="sd-plan__list">
+            {
+              service.planning.benefits.map((b, i) => (
+                <li data-anim="up" data-anim-delay={`${i * 0.08}`}>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="11" fill="currentColor" />
+                    <path
+                      d="m7 12.2 3.3 3.3L17 8.8"
+                      stroke="var(--color-on-accent)"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>{b}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- faqs -->
+      <h2 class="sd__heading" data-anim="up">Frequently Asked Questions</h2>
+      <div class="sd-faq">
+        {
+          service.faqs.map((faq, i) => (
+            <details class="sd-faq__item" open={i === 0} data-anim="up">
+              <summary class="sd-faq__q">
+                <span>{faq.question}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <p class="sd-faq__a">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sd-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sd__grid {
+    display: grid;
+    grid-template-columns: 20.625rem minmax(0, 1fr);
+    gap: 1.875rem;
+    align-items: start;
+  }
+
+  /* ---------------------------------------------------------- sidebar -- */
+  .sd__aside {
+    display: grid;
+    gap: 1.875rem;
+    position: sticky;
+    top: calc(var(--header-h) + 1.25rem);
+  }
+
+  .sd-list {
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-alt);
+  }
+  .sd-list ul {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .sd-list__link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+  .sd-list__mark {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--color-accent);
+  }
+  .sd-list li + li {
+    border-top: 1px solid var(--color-border);
+  }
+  .sd-list__link:hover {
+    background: var(--color-bg);
+    color: var(--color-heading);
+  }
+  .sd-list__link.is-current {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .sd-list__link.is-current .sd-list__mark {
+    color: var(--color-on-accent);
+  }
+
+  /* contact card */
+  .sd-help {
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-alt);
+    overflow: hidden;
+    text-align: center;
+  }
+  .sd-help__media {
+    position: relative;
+  }
+  .sd-help__media img {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+  }
+  .sd-help__icon {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    transform: translate(-50%, 50%);
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .sd-help__icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .sd-help__body {
+    padding: 3rem 1.25rem 1.875rem;
+  }
+  .sd-help__label {
+    margin-bottom: 0.25rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .sd-help__phone {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-bold);
+    color: var(--color-accent);
+  }
+  .sd-help__phone:hover {
+    color: var(--color-heading);
+  }
+
+  /* ------------------------------------------------------------- main -- */
+  .sd__hero,
+  .sd__figure {
+    border-radius: var(--radius-lg);
+  }
+  .sd__hero img,
+  .sd__figure img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .sd__block {
+    margin-top: 1.875rem;
+  }
+  .sd__copy {
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .sd__heading {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: var(--text-h3);
+    color: var(--color-heading);
+  }
+  .sd__block > .sd__heading:first-child {
+    margin-top: 1.25rem;
+  }
+  .sd__figure {
+    margin-top: 1.5rem;
+  }
+
+  /* benefits */
+  .sd-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.875rem 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .sd-benefit__icon {
+    display: block;
+    color: var(--color-heading);
+  }
+  .sd-benefit__icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .sd-benefit__title {
+    margin: 0.875rem 0 0.375rem;
+    font-size: var(--text-h6);
+    color: var(--color-heading);
+  }
+  .sd-benefit__text {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  /* planning */
+  .sd-plan {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 1.875rem;
+    align-items: center;
+    margin-top: 3.125rem;
+  }
+  .sd-plan__media {
+    border-radius: var(--radius-lg);
+  }
+  .sd-plan__media img {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+  }
+  .sd-plan__body .sd__heading {
+    margin-top: 0;
+  }
+  .sd-plan__list {
+    display: grid;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+  }
+  .sd-plan__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .sd-plan__list svg {
+    flex: none;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin-top: 0.125rem;
+    color: var(--color-accent);
+  }
+
+  /* faq */
+  .sd-faq {
+    display: grid;
+    gap: 0.9375rem;
+    margin-top: 1.5rem;
+  }
+  .sd-faq__item {
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-alt);
+    overflow: hidden;
+  }
+  .sd-faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+    cursor: pointer;
+    list-style: none;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .sd-faq__q::-webkit-details-marker {
+    display: none;
+  }
+  .sd-faq__q svg {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .sd-faq__item[open] .sd-faq__q {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .sd-faq__item[open] .sd-faq__q svg {
+    transform: rotate(180deg);
+  }
+  .sd-faq__a {
+    padding: 1.125rem 1.25rem;
+    color: var(--color-text);
+  }
+
+  /* ------------------------------------------------------- responsive -- */
+  @media (max-width: 991px) {
+    .sd__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sd__aside {
+      position: static;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sd-plan {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .sd__aside {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sd-benefits {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 479px) {
+    .sd-benefits {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sd__hero img,
+    .sd__figure img {
+      aspect-ratio: 4 / 3;
+    }
+    .sd-faq__q {
+      padding: 0.875rem 1rem;
+    }
+  }
+</style>

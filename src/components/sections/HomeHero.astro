@@ -1,0 +1,175 @@
+---
+/**
+ * Homepage hero — full-bleed photo, forest overlay, transparent header on top.
+ * Copy matches the original Solor demo verbatim.
+ */
+import SplitText from '../ui/SplitText.astro';
+import Button from '../ui/Button.astro';
+---
+
+<section class="hero">
+  <div class="hero__bg">
+    <img
+      src="/images/hero.jpg"
+      alt=""
+      width="1920"
+      height="1080"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+  <span class="hero__overlay" aria-hidden="true"></span>
+
+  <div class="container-site hero__inner">
+    <p class="hero__eyebrow" data-anim="up">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M13.2 2 4.6 13.2h5.6L9 22l9.4-11.9h-6z" />
+      </svg>
+      <span>Welcome to Solor</span>
+    </p>
+
+    <div class="hero__title">
+      <SplitText
+        text="Powering the Future With Renewable."
+        mode="chars"
+        as="h1"
+        class="hero__h1"
+      />
+    </div>
+
+    <p class="hero__text" data-anim="up" data-anim-delay="0.2">
+      Duis ultricies, tortor a accumsan fermentum, purus diam mollis velit, eu
+      bibendum ipsum erat quis leo. Vestibulum finibus, leo dapibus feugiat
+      rutrum, augue lacus rhoncus velit, vel scelerisque odio est.
+    </p>
+
+    <div class="hero__actions" data-anim="up" data-anim-delay="0.35">
+      <Button href="/services" size="lg">Our Services</Button>
+      <Button href="/contact" size="lg" class="hero__ghost">Contact Now</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    /* The header is transparent and sits over this section. */
+    padding-block: calc(var(--header-h) + 6.25rem) 7.5rem;
+    overflow: hidden;
+    background: var(--color-bg-dark);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-overlay);
+  }
+
+  .hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .hero__eyebrow svg {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .hero__title {
+    max-width: 50rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero__title :global(.hero__h1) {
+    margin: 0;
+    color: var(--color-on-dark);
+    font-size: var(--text-h1);
+    line-height: var(--leading-display);
+    text-wrap: balance;
+  }
+  /* "Renewable." — the closing word carries the accent, as in the original. */
+  .hero__title :global(.split-word-group:last-child) {
+    color: var(--color-accent);
+  }
+
+  .hero__text {
+    max-width: 36.25rem;
+    margin-bottom: 2.5rem;
+    color: var(--color-on-dark);
+    font-size: var(--text-lead);
+    line-height: var(--leading-body);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* Outline CTA, re-tinted for a dark backdrop via the Button's own vars. */
+  .hero__actions :global(.hero__ghost) {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-on-dark);
+    --btn-border: var(--color-accent);
+    --btn-bg-hover: var(--color-accent);
+    --btn-fg-hover: var(--color-on-accent);
+    --btn-border-hover: var(--color-accent);
+  }
+
+  @media (max-width: 991px) {
+    .hero {
+      min-height: 0;
+      padding-block: calc(var(--header-h) + 3.75rem) 5rem;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .hero {
+      padding-block: calc(var(--header-h) + 2.5rem) 3.75rem;
+      text-align: left;
+    }
+    .hero__text {
+      margin-bottom: 2rem;
+      font-size: var(--text-base);
+    }
+    .hero__actions {
+      gap: 0.75rem;
+    }
+    .hero__actions :global(.btn) {
+      padding: 0.875rem 1.5rem;
+      font-size: var(--text-sm);
+    }
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+/**
+ * Counter band — the forest-green strip that sits under "Why choose us".
+ *
+ * The counter helper writes into `textContent` of its own element, so the
+ * "+" lives in a sibling <span>. Putting it inside the counter would get
+ * overwritten on the first frame.
+ */
+interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+  icon: 'project' | 'clients' | 'award' | 'rating';
+}
+
+const stats: Stat[] = [
+  { value: 1000, suffix: '+', label: 'Project Done',   icon: 'project' },
+  { value: 1200, suffix: '+', label: 'Happy Clients',  icon: 'clients' },
+  { value: 850,  suffix: '+', label: 'Award Winning',  icon: 'award' },
+  { value: 1100, suffix: '+', label: 'Rating Customer', icon: 'rating' },
+];
+
+const paths: Record<Stat['icon'], string> = {
+  project: 'M3 20h18M6 20V9l6-4 6 4v11M10 20v-5h4v5',
+  clients: 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0',
+  award: 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM8.5 14 7 22l5-2.5L17 22l-1.5-8',
+  rating: 'M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9L12 3.5Z',
+};
+---
+
+<section class="stats" aria-label="Solor by the numbers">
+  <div class="container-site">
+    <ul class="stats__list">
+      {
+        stats.map((stat, i) => (
+          <li class="stat" data-anim="up" data-anim-delay={(i * 0.12).toFixed(2)}>
+            <span class="stat__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d={paths[stat.icon]} stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+
+            <span class="stat__text">
+              <span class="stat__value">
+                {/* Counter target — its textContent is replaced each frame. */}
+                <span class="stat__number" data-count-to={String(stat.value)}>{stat.value}</span>
+                <span class="stat__suffix">{stat.suffix}</span>
+              </span>
+              <span class="stat__label">{stat.label}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding-block: 3.125rem;
+    background: var(--color-bg-dark);
+    color: var(--color-on-dark);
+  }
+
+  .stats__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.875rem;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  /* Hairline dividers, matching the original strip. */
+  .stat + .stat { border-inline-start: 1px solid var(--color-border-dark); padding-inline-start: 1.875rem; }
+
+  .stat__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+  .stat__icon svg { width: 1.625rem; height: 1.625rem; }
+
+  .stat__text { display: flex; flex-direction: column; min-width: 0; }
+
+  .stat__value {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: 1.15;
+    color: var(--color-on-dark);
+  }
+  .stat__suffix { color: var(--color-accent); }
+
+  .stat__label {
+    font-size: var(--text-base);
+    color: var(--color-on-dark-muted);
+  }
+
+  @media (max-width: 991px) {
+    .stats__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    /* Dividers only make sense between items on the same row. */
+    .stat + .stat { border-inline-start: 0; padding-inline-start: 0; }
+  }
+
+  @media (max-width: 575px) {
+    .stats { padding-block: 2.5rem; }
+    .stats__list { grid-template-columns: minmax(0, 1fr); }
+    .stat__icon { width: 3rem; height: 3rem; }
+    .stat__icon svg { width: 1.375rem; height: 1.375rem; }
+  }
+</style>

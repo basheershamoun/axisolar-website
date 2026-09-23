@@ -1,0 +1,190 @@
+---
+/**
+ * Blog archive grid — the three-up card layout from the original theme:
+ * a full-bleed featured image with a white meta card floated over its foot.
+ *
+ * Cards carry `data-*` search keys so the archive page can filter them
+ * client-side from the sidebar's search / category / tag links without a
+ * round trip or a dependency.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  /** Heading level used for card titles — the page owns the single h1. */
+  headingLevel?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { posts, headingLevel: Heading = 'h2', class: className = '' } = Astro.props;
+
+const dateFmt = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<div class:list={['blog-grid', className]}>
+  {
+    posts.map((post, i) => (
+      <article
+        class="blog-card"
+        data-anim="up"
+        data-anim-delay={((i % 3) * 0.12).toFixed(2)}
+        data-post-title={post.data.title.toLowerCase()}
+        data-post-category={post.data.category.toLowerCase()}
+        data-post-tags={post.data.tags.join('|').toLowerCase()}
+        data-post-text={`${post.data.title} ${post.data.description}`.toLowerCase()}
+      >
+        <figure class="blog-card__media reveal-image">
+          <img
+            src={post.data.image}
+            alt={post.data.imageAlt ?? post.data.title}
+            width="800"
+            height="450"
+            loading={i < 3 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </figure>
+
+        <div class="blog-card__body">
+          <Heading class="blog-card__title">
+            <a href={`/blog/${post.id}/`}>
+              {post.data.title}
+              <span class="blog-card__hit" />
+            </a>
+          </Heading>
+
+          <ul class="blog-card__meta">
+            <li>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <rect x="1.5" y="2.5" width="13" height="12" rx="2" />
+                <path d="M1.5 6.5h13M5 1v3M11 1v3" />
+              </svg>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {dateFmt.format(post.data.pubDate)}
+              </time>
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8.3 1.5H14.5v6.2L8 14.2 1.8 8 8.3 1.5Z" />
+                <circle cx="11.4" cy="4.6" r="1" />
+              </svg>
+              <span>{post.data.category}</span>
+            </li>
+          </ul>
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 75rem) {
+    .blog-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* --------------------------------------------------------------- card
+     Image and meta box share one grid cell, so the box floats over the
+     foot of the image without absolute positioning — which keeps the card
+     itself as the containing block for the stretched title link. */
+  .blog-card {
+    position: relative;
+    display: grid;
+    grid-template-areas: 'stack';
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-alt);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .blog-card:hover { box-shadow: var(--shadow-lift); }
+
+  .blog-card__media {
+    grid-area: stack;
+    margin: 0;
+    aspect-ratio: 5 / 6;
+    border-radius: var(--radius-lg);
+  }
+  .blog-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .blog-card:hover .blog-card__media img { transform: scale(1.06); }
+
+  .blog-card__body {
+    grid-area: stack;
+    align-self: end;
+    z-index: 1;
+    margin: 0.625rem;
+    padding: 1.25rem 1.375rem;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+  }
+
+  .blog-card__title {
+    margin: 0 0 0.625rem;
+    font-size: var(--text-h5);
+    line-height: 1.25;
+    color: var(--color-heading);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  /* Stretches the title link across the whole card so the card is
+     clickable, while the accessible name stays on the title alone. */
+  .blog-card__hit {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .blog-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+  .blog-card__meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+  }
+  .blog-card__meta svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    flex: none;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .blog-card__meta svg circle { fill: var(--color-accent); stroke: none; }
+
+  .blog-card:hover .blog-card__title,
+  .blog-card:focus-within .blog-card__title { color: var(--color-primary); }
+  .blog-card:focus-within .blog-card__body {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Toggled by the archive page filter. */
+  .blog-card[hidden] { display: none; }
+
+  @media (max-width: 26rem) {
+    .blog-card__media { aspect-ratio: 4 / 5; }
+    .blog-card__body { padding: 1rem; }
+    .blog-card__title { font-size: var(--text-h6); }
+  }
+</style>

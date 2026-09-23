@@ -1,0 +1,183 @@
+---
+/**
+ * Services archive grid — image card with an overlapping white caption panel
+ * and a lime icon badge, three across on desktop.
+ */
+import { services, icons, type Service } from '../../data/services';
+
+interface Props {
+  /** Defaults to every service, in data order. */
+  items?: Service[];
+  /** Heading level for the card titles — `h2` when the grid owns the page. */
+  headingLevel?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { items = services, headingLevel: Title = 'h2', class: className = '' } = Astro.props;
+---
+
+<section class:list={['svc-grid-sec', 'section', className]} aria-label="Our services">
+  <div class="container-site">
+    <ul class="svc-grid">
+      {
+        items.map((service, i) => (
+          <li class="svc" data-anim="up" data-anim-delay={`${(i % 3) * 0.1}`}>
+            <div class="svc__media">
+              <img
+                src={service.image}
+                alt={service.imageAlt}
+                width="800"
+                height="962"
+                loading={i < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </div>
+
+            <span class="svc__badge" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={icons[service.icon]}
+              />
+            </span>
+
+            <div class="svc__panel">
+              <Title class="svc__title">
+                <a class="svc__link" href={`/services/${service.slug}/`}>
+                  {service.title}
+                </a>
+              </Title>
+              <p class="svc__text">{service.excerpt}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.875rem;
+  }
+
+  .svc {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 30rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-dark);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* --- image ------------------------------------------------------------ */
+  .svc__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .svc__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .svc:hover .svc__media img,
+  .svc:focus-within .svc__media img {
+    transform: scale(1.06);
+  }
+
+  /* --- icon badge ------------------------------------------------------- */
+  .svc__badge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .svc__badge svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .svc:hover .svc__badge {
+    transform: translateY(-3px);
+  }
+
+  /* --- caption panel ---------------------------------------------------- */
+  .svc__panel {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .svc__title {
+    margin-bottom: 0.5rem;
+    font-size: var(--text-h5);
+    color: var(--color-heading);
+  }
+  .svc__title a::after {
+    /* Whole card is the hit area, but only the title is a real link. */
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .svc__title a:hover {
+    color: var(--color-heading);
+  }
+  .svc:hover .svc__title {
+    color: var(--color-heading);
+  }
+
+  .svc__text {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  /* --- responsive ------------------------------------------------------- */
+  @media (max-width: 991px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 575px) {
+    .svc-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+    .svc {
+      min-height: 26rem;
+      padding: 0.9375rem;
+    }
+    .svc__badge {
+      top: 0.9375rem;
+      right: 0.9375rem;
+      width: 3.125rem;
+      height: 3.125rem;
+    }
+    .svc__badge svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    .svc__panel {
+      padding: 1.25rem;
+    }
+  }
+</style>

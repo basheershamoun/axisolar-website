@@ -1,0 +1,271 @@
+---
+/**
+ * Portfolio index grid with a category filter.
+ *
+ * The original ran Isotope over a WordPress loop. This is the same interaction
+ * in ~25 lines of vanilla JS and no dependency: every card is in the DOM and
+ * visible from the first paint, the filter bar is `hidden` in the markup and
+ * only revealed once the script runs, and filtering toggles the `hidden`
+ * attribute rather than rebuilding the grid. With JS off you get the full,
+ * unfiltered grid — which is the correct fallback, not a broken one.
+ */
+import { projects, categories, categorySlug, type Project } from '../../data/projects';
+
+interface Props {
+  /** Override the default set (all projects), e.g. for a related-work strip. */
+  items?: Project[];
+  class?: string;
+}
+
+const { items = projects, class: className = '' } = Astro.props;
+
+const used = categories.filter((c) => items.some((p) => p.category === c));
+---
+
+<section class:list={['section pgrid', className]} aria-labelledby="pgrid-label" data-portfolio-filter>
+  <div class="container-site">
+    <h2 id="pgrid-label" class="sr-only">Our projects</h2>
+
+    <div class="pgrid__filters" data-portfolio-filters hidden>
+      <div class="pgrid__filterbar" role="group" aria-label="Filter projects by category">
+        <button type="button" class="pfilter is-active" data-filter="all" aria-pressed="true">
+          All Projects
+        </button>
+        {used.map((cat) => (
+          <button type="button" class="pfilter" data-filter={categorySlug(cat)} aria-pressed="false">
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <p class="sr-only" role="status" aria-live="polite" data-portfolio-status></p>
+
+    <ul class="pgrid__items">
+      {items.map((project, i) => (
+        <li
+          class="pcard"
+          data-category={categorySlug(project.category)}
+          data-anim="up"
+          data-anim-delay={((i % 4) * 0.1).toFixed(2)}
+        >
+          <a class="pcard__link" href={`/portfolio/${project.slug}/`}>
+            <span class="pcard__media">
+              <img
+                src={project.image.src}
+                alt={project.image.alt}
+                width="320"
+                height="320"
+                loading={i < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </span>
+
+            <span class="pcard__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" />
+                <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" />
+              </svg>
+            </span>
+
+            <span class="pcard__body">
+              <span class="pcard__title">{project.title}</span>
+              <span class="pcard__cat">{project.category}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---- filter bar ------------------------------------------------------ */
+  .pgrid__filters { margin-bottom: 3rem; }
+  .pgrid__filters[hidden] { display: none; }
+
+  .pgrid__filterbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .pfilter {
+    padding: 0.625rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    line-height: 1.4;
+    color: var(--color-heading);
+    background: var(--color-bg-alt);
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+  .pfilter:hover { background: var(--color-accent); }
+  .pfilter[aria-pressed='true'] {
+    background: var(--color-accent);
+    border-color: var(--color-forest);
+    color: var(--color-on-accent);
+  }
+
+  /* ---- grid ------------------------------------------------------------ */
+  .pgrid__items {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.875rem;
+  }
+  .pgrid__items > [hidden] { display: none; }
+
+  @media (max-width: 1199px) {
+    .pgrid__items { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 991px) {
+    .pgrid__items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 575px) {
+    .pgrid__items { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  }
+
+  /* ---- card ------------------------------------------------------------ */
+  .pcard__link {
+    position: relative;
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .pcard__media {
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-alt);
+  }
+  .pcard__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .pcard__link:hover .pcard__media img,
+  .pcard__link:focus-visible .pcard__media img {
+    transform: scale(1.06);
+  }
+
+  /* Lime round-square badge, top right — the original's "open project" cue. */
+  .pcard__icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .pcard__icon svg { width: 1.375rem; height: 1.375rem; }
+  .pcard__link:hover .pcard__icon,
+  .pcard__link:focus-visible .pcard__icon {
+    background: var(--color-forest);
+    color: var(--color-white);
+    transform: rotate(-45deg);
+  }
+
+  /* White plate sitting over the foot of the image. */
+  .pcard__body {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    display: block;
+    padding: 1.125rem 1.25rem;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+  }
+  .pcard__title {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-h5);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    color: var(--color-heading);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .pcard__cat {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+  .pcard__link:hover .pcard__title { color: var(--color-forest); }
+
+  @media (max-width: 575px) {
+    .pcard__body { padding: 1rem; }
+  }
+</style>
+
+<script>
+  /**
+   * Category filter. Scoped per section so the component can appear more than
+   * once on a page without the instances fighting each other.
+   */
+  type Root = HTMLElement;
+
+  const setup = (root: Root) => {
+    const bar = root.querySelector<HTMLElement>('[data-portfolio-filters]');
+    const status = root.querySelector<HTMLElement>('[data-portfolio-status]');
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('button[data-filter]'));
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.pcard[data-category]'));
+    if (!bar || !buttons.length || !items.length) return;
+
+    // Only now that we can actually filter does the bar become visible.
+    bar.hidden = false;
+
+    const apply = (value: string) => {
+      let shown = 0;
+      for (const item of items) {
+        const match = value === 'all' || item.dataset.category === value;
+        item.hidden = !match;
+        if (match) shown += 1;
+      }
+      for (const button of buttons) {
+        const on = button.dataset.filter === value;
+        button.setAttribute('aria-pressed', String(on));
+        button.classList.toggle('is-active', on);
+      }
+      if (status) {
+        status.textContent = `${shown} ${shown === 1 ? 'project' : 'projects'} shown`;
+      }
+    };
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => apply(button.dataset.filter || 'all'));
+    }
+  };
+
+  document.querySelectorAll<Root>('[data-portfolio-filter]').forEach(setup);
+</script>

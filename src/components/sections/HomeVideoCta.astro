@@ -1,0 +1,297 @@
+---
+/**
+ * Full-width video band. The original loaded Elementor's lightbox bundle plus
+ * a YouTube iframe behind an overlay; here the iframe is created only when the
+ * play button is pressed, so the page ships ~800KB less on first paint.
+ *
+ * The lightbox is a native <dialog>, which gives modal semantics, the top
+ * layer, backdrop and Escape-to-close for free. On close the iframe src is
+ * blanked and the node removed (so audio stops) and focus goes back to the
+ * play button.
+ */
+interface Props {
+  /** YouTube video id — embedded from the no-cookie domain. */
+  videoId?: string;
+  videoTitle?: string;
+  image?: string;
+  imageAlt?: string;
+  eyebrow?: string;
+  title?: string;
+  class?: string;
+}
+
+const {
+  videoId = 'XHOmBV4js_E',
+  videoTitle = 'Solor — powering the future with renewable energy',
+  image = '/images/video-bg.jpg',
+  imageAlt = '',
+  eyebrow = 'See how we work',
+  title = 'Clean Power, Installed With Care',
+  class: className = '',
+} = Astro.props;
+
+const embedSrc = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&controls=1&playsinline=1`;
+---
+
+<section class:list={['videocta', className]} aria-label={title} data-video-cta data-video-src={embedSrc}>
+  <img class="videocta__bg" src={image} alt={imageAlt} aria-hidden={imageAlt ? undefined : 'true'} width="1440" height="560" loading="lazy" decoding="async" />
+  <div class="videocta__scrim" aria-hidden="true"></div>
+
+  <div class="container-site videocta__inner">
+    <div class="videocta__copy">
+      <span class="videocta__eyebrow" data-anim="up">{eyebrow}</span>
+      <h2 class="videocta__title" data-anim="up" data-anim-delay="0.1">{title}</h2>
+    </div>
+
+    <button type="button" class="videocta__play" data-video-open aria-label={`Play video: ${videoTitle}`}>
+      <span class="videocta__ring" aria-hidden="true"></span>
+      <span class="videocta__ring videocta__ring--delayed" aria-hidden="true"></span>
+      <svg class="videocta__glyph" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M9 7.5v9l8-4.5-8-4.5Z" />
+      </svg>
+    </button>
+  </div>
+
+  <dialog class="videocta__dialog" data-video-dialog aria-label={videoTitle}>
+    <div class="videocta__dialog-inner">
+      <button type="button" class="videocta__close" data-video-close aria-label="Close video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="videocta__frame" data-video-frame></div>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const mount = (root: HTMLElement) => {
+    if (root.dataset.videoReady) return;
+    root.dataset.videoReady = '1';
+
+    const openBtn = root.querySelector<HTMLButtonElement>('[data-video-open]');
+    const dialog = root.querySelector<HTMLDialogElement>('[data-video-dialog]');
+    const host = root.querySelector<HTMLElement>('[data-video-frame]');
+    const closeBtn = root.querySelector<HTMLButtonElement>('[data-video-close]');
+    const src = root.dataset.videoSrc;
+    if (!openBtn || !dialog || !host || !src) return;
+
+    // The iframe does not exist until this runs — nothing is fetched on load.
+    const open = () => {
+      if (!host.firstElementChild) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `${src}${src.includes('?') ? '&' : '?'}autoplay=1`;
+        iframe.title = dialog.getAttribute('aria-label') || 'Video';
+        iframe.allow =
+          'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.setAttribute('frameborder', '0');
+        host.appendChild(iframe);
+      }
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    };
+
+    // Idempotent: blanking the src before removal is what actually stops the
+    // audio — a detached iframe can keep playing in some browsers.
+    const teardown = () => {
+      const iframe = host.querySelector('iframe');
+      if (iframe) {
+        iframe.src = 'about:blank';
+        iframe.remove();
+      }
+      openBtn.focus();
+    };
+
+    const dismiss = () => {
+      dialog.close();
+      teardown();
+    };
+
+    openBtn.addEventListener('click', open);
+    closeBtn?.addEventListener('click', dismiss);
+    // Escape is handled by the dialog itself; `cancel` is the hook for it.
+    dialog.addEventListener('cancel', teardown);
+    // Safety net for any dismissal path that skips the two above.
+    dialog.addEventListener('close', teardown);
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dismiss();
+    });
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-video-cta]').forEach(mount);
+</script>
+
+<style>
+  .videocta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--color-bg-dark);
+  }
+
+  .videocta__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .videocta__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-overlay);
+  }
+
+  .videocta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    min-height: 32.5rem;
+    padding-block: var(--section-py);
+    text-align: center;
+  }
+
+  /* ---- play button --------------------------------------------------- */
+  .videocta__play {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    color: var(--color-on-dark);
+    border: 2px solid var(--color-on-dark);
+    border-radius: 50%;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .videocta__play:hover,
+  .videocta__play:focus-visible {
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .videocta__glyph {
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0.125rem;
+  }
+
+  /* Pulsing ring — transform + opacity only, so it stays on the compositor. */
+  .videocta__ring {
+    position: absolute;
+    inset: -2px;
+    border: 2px solid var(--color-on-dark);
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(1);
+    animation: videocta-pulse 2.8s var(--ease-out) infinite;
+    pointer-events: none;
+  }
+  .videocta__ring--delayed { animation-delay: 1.4s; }
+
+  @keyframes videocta-pulse {
+    0%   { opacity: 0.55; transform: scale(1); }
+    70%  { opacity: 0;    transform: scale(1.55); }
+    100% { opacity: 0;    transform: scale(1.55); }
+  }
+
+  /* ---- copy ----------------------------------------------------------- */
+  .videocta__eyebrow {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .videocta__title {
+    max-width: 18ch;
+    margin: 0 auto;
+    font-size: var(--text-h2);
+    color: var(--color-on-dark);
+  }
+
+  /* ---- lightbox ------------------------------------------------------- */
+  /* The dim is painted by the dialog itself rather than ::backdrop, so it can
+     use a token: custom properties do not reliably reach ::backdrop. */
+  .videocta__dialog {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: var(--container-pad);
+    color: var(--color-on-dark);
+    background: color-mix(in srgb, var(--color-ink) 88%, transparent);
+    border: 0;
+  }
+  .videocta__dialog:not([open]) { display: none; }
+  .videocta__dialog[open] {
+    display: grid;
+    place-items: center;
+  }
+  .videocta__dialog::backdrop { background: transparent; }
+
+  .videocta__dialog-inner {
+    position: relative;
+    width: min(64rem, 100%);
+  }
+
+  .videocta__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-black);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .videocta__frame :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .videocta__close {
+    position: absolute;
+    top: -3rem;
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color-on-dark);
+    border: 1px solid var(--color-border-dark);
+    border-radius: 50%;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .videocta__close:hover,
+  .videocta__close:focus-visible {
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+  }
+  .videocta__close svg { width: 1.125rem; height: 1.125rem; }
+
+  /* ---- responsive ------------------------------------------------------ */
+  @media (max-width: 767px) {
+    .videocta__inner { min-height: 24rem; gap: 1.5rem; }
+    .videocta__play { width: 4.5rem; height: 4.5rem; }
+    .videocta__glyph { width: 1.625rem; height: 1.625rem; }
+    .videocta__close { top: -2.75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .videocta__ring { animation: none; opacity: 0.35; }
+  }
+</style>

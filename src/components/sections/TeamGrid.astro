@@ -1,0 +1,183 @@
+---
+/**
+ * Team card grid. Each card is an image with a floating caption plate —
+ * name, role and the lime link chip from the original demo. The caption's
+ * link is stretched across the card so the whole tile is clickable while
+ * exposing exactly one link, labelled with the member's name.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import { team as allMembers, type TeamMember } from '../../data/team';
+
+interface Props {
+  members?: TeamMember[];
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  align?: 'left' | 'center';
+  tone?: 'default' | 'alt';
+}
+
+const {
+  members = allMembers,
+  eyebrow,
+  title,
+  text,
+  align = 'center',
+  tone = 'default',
+} = Astro.props;
+
+const hasHeading = Boolean(title);
+---
+
+<section class:list={['team-grid', 'section', tone === 'alt' && 'team-grid--alt']}>
+  <div class="container-site">
+    {hasHeading && (
+      <SectionHeading
+        eyebrow={eyebrow}
+        title={title!}
+        text={text}
+        align={align}
+        class="team-grid__head"
+      />
+    )}
+
+    <ul class="team-grid__list">
+      {members.map((m, i) => (
+        <li class="team-card" data-anim="up" data-anim-delay={`${(i % 4) * 0.12}`}>
+          <div class="reveal-image team-card__media">
+            <img
+              src={m.image}
+              alt={`${m.name}, ${m.role} at Solor`}
+              width="420"
+              height="480"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div class="team-card__plate">
+            <div class="team-card__meta">
+              <h3 class="team-card__name">
+                <a href={`/team/${m.slug}`}>{m.name}</a>
+              </h3>
+              <p class="team-card__role">{m.role}</p>
+            </div>
+
+            <span class="team-card__chip" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path
+                  d="M10 13.5a3.7 3.7 0 005.6.4l2.6-2.6a3.75 3.75 0 00-5.3-5.3l-1.2 1.2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M14 10.5a3.7 3.7 0 00-5.6-.4l-2.6 2.6a3.75 3.75 0 005.3 5.3l1.2-1.2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .team-grid--alt { background: var(--color-bg-alt); }
+  .team-grid :global(.team-grid__head) { margin-bottom: 3.25rem; }
+
+  .team-grid__list {
+    display: grid;
+    gap: 1.875rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .team-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+  }
+
+  .team-card__media {
+    border-radius: var(--radius-lg);
+    aspect-ratio: 7 / 8;
+  }
+  .team-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .team-card:hover .team-card__media img { transform: scale(1.06); }
+
+  .team-card__plate {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: calc(100% - 2rem);
+    margin: -4.5rem auto 0;
+    padding: 1.125rem 1.125rem 1.125rem 1.375rem;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+  }
+
+  .team-card__name {
+    font-size: var(--text-h5);
+    margin: 0 0 0.125rem;
+  }
+  /* The lime chip is the hover affordance — the name only underlines so the
+     cue is not colour-only. */
+  .team-card__name a { color: inherit; }
+  .team-card__name a:hover { text-decoration: underline; }
+
+  /* Stretch the single link over the whole tile. */
+  .team-card__name a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .team-card__role {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  .team-card__chip {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .team-card__chip svg { width: 1.125rem; height: 1.125rem; }
+
+  .team-card:hover .team-card__chip,
+  .team-card:focus-within .team-card__chip {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1199px) {
+    .team-grid__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 991px) {
+    .team-grid__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 575px) {
+    .team-grid__list { grid-template-columns: 1fr; }
+    .team-card__plate { width: calc(100% - 1.5rem); }
+  }
+</style>

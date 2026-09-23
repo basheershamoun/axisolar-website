@@ -1,0 +1,70 @@
+---
+/** Inner-page banner: background image, forest overlay, title + breadcrumb. */
+import SplitText from './SplitText.astro';
+
+interface Crumb { label: string; href?: string }
+interface Props {
+  title: string;
+  crumbs?: Crumb[];
+  image?: string;
+}
+
+const { title, crumbs = [], image = '/images/header-banner.jpg' } = Astro.props;
+---
+
+<section class="phero" style={`--phero-img: url('${image}')`}>
+  <div class="container-site phero__inner">
+    <SplitText text={title} mode="chars" as="h1" class="phero__title" />
+    {crumbs.length > 0 && (
+      <nav aria-label="Breadcrumb">
+        <ol class="phero__crumbs">
+          <li><a href="/">Home</a></li>
+          {crumbs.map((c) => (
+            <li>
+              {c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+  </div>
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 25rem;
+    padding-block: 5rem;
+    background-image: var(--phero-img);
+    background-size: cover;
+    background-position: center;
+    isolation: isolate;
+  }
+  .phero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-overlay);
+  }
+  .phero__inner { text-align: center; }
+  .phero :global(.phero__title) { color: var(--color-white); margin-bottom: 0.75rem; }
+
+  .phero__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: var(--text-base);
+    color: var(--color-on-dark-muted);
+  }
+  .phero__crumbs li + li::before {
+    content: '/';
+    margin-right: 0.75rem;
+    color: var(--color-accent);
+  }
+  .phero__crumbs a:hover { color: var(--color-accent); }
+  .phero__crumbs [aria-current] { color: var(--color-accent); }
+</style>

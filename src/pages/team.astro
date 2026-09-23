@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import TeamGrid from '../components/sections/TeamGrid.astro';
+import { team } from '../data/team';
+---
+
+<Base
+  title="Our Team — Solor"
+  description="The engineers, analysts and installers who design, build and look after every Solor solar energy system."
+>
+  <PageHero title="Our Team" crumbs={[{ label: 'Team' }]} />
+  <TeamGrid members={team} />
+</Base>

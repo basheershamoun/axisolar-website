@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import ContactInfo from '../components/sections/ContactInfo.astro';
+import ContactForm from '../components/sections/ContactForm.astro';
+---
+
+<Base
+  title="Contact Us — Solor"
+  description="Talk to the Solor team about solar PV, hybrid energy and maintenance. Call, email or send us a message and we will reply within one working day."
+>
+  {/* PageHero owns the page's single <h1>. */}
+  <PageHero title="Contact us" crumbs={[{ label: 'Contact' }]} />
+
+  <ContactInfo />
+  <ContactForm />
+</Base>

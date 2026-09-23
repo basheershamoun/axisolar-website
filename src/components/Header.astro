@@ -1,0 +1,339 @@
+---
+/** Sticky site header: top utility bar, logo, dropdown nav, mobile drawer. */
+import { nav, site } from '../data/site';
+import Button from './ui/Button.astro';
+
+interface Props { transparent?: boolean }
+const { transparent = false } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class:list={['hdr', { 'hdr--transparent': transparent }]} data-header>
+  <div class="hdr__bar">
+    <div class="container-site hdr__bar-inner">
+      <div class="hdr__contact">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <span class="hdr__sep" aria-hidden="true"></span>
+        <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+      </div>
+      <p class="hdr__note">{site.hours}</p>
+    </div>
+  </div>
+
+  <div class="hdr__main">
+    <div class="container-site hdr__main-inner">
+      <a href="/" class="hdr__logo" aria-label={`${site.name} — home`}>
+        <img src="/images/logo.svg" alt={site.name} width="130" height="36" />
+      </a>
+
+      <nav class="hdr__nav" aria-label="Main">
+        <ul class="hdr__menu">
+          {nav.map((item) => (
+            <li class:list={['hdr__item', { 'has-children': !!item.children }]}>
+              <a
+                href={item.href}
+                class:list={['hdr__link', { 'is-active': isActive(item.href) }]}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+                {item.children && (
+                  <svg class="hdr__caret" viewBox="0 0 10 6" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                )}
+              </a>
+              {item.children && (
+                <ul class="hdr__dropdown">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href} class:list={{ 'is-active': isActive(child.href) }}>
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="hdr__actions">
+        <Button href="/contact" class="hdr__cta">Get A Quote</Button>
+        <button class="hdr__burger" type="button" data-menu-toggle
+          aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="hdr__drawer" id="mobile-nav" data-drawer hidden>
+    <div class="hdr__drawer-head">
+      <img src="/images/logo.svg" alt={site.name} width="120" height="33" />
+      <button type="button" data-menu-close aria-label="Close menu" class="hdr__close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <ul class="hdr__drawer-menu">
+        {nav.map((item) => (
+          <li>
+            {item.children ? (
+              <>
+                <button type="button" class="hdr__drawer-toggle" aria-expanded="false">
+                  {item.label}
+                  <svg viewBox="0 0 10 6" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+                <ul class="hdr__drawer-sub" hidden>
+                  {item.children.map((child) => (
+                    <li><a href={child.href}>{child.label}</a></li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <a href={item.href} class:list={{ 'is-active': isActive(item.href) }}>{item.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="hdr__drawer-foot">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+    </div>
+  </div>
+  <div class="hdr__scrim" data-scrim hidden></div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const drawer = document.querySelector<HTMLElement>('[data-drawer]');
+  const scrim = document.querySelector<HTMLElement>('[data-scrim]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const close = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+
+  /* Sticky state — passive listener + rAF so scrolling never blocks. */
+  if (header) {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        header.classList.toggle('is-stuck', window.scrollY > 40);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  const setOpen = (open: boolean) => {
+    if (!drawer || !scrim || !toggle) return;
+    drawer.hidden = !open;
+    scrim.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) drawer.querySelector<HTMLElement>('a,button')?.focus();
+    else toggle.focus();
+  };
+
+  toggle?.addEventListener('click', () => setOpen(drawer?.hidden ?? true));
+  close?.addEventListener('click', () => setOpen(false));
+  scrim?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer && !drawer.hidden) setOpen(false);
+  });
+
+  /* Mobile accordion submenus */
+  drawer?.querySelectorAll<HTMLButtonElement>('.hdr__drawer-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const sub = btn.nextElementSibling as HTMLElement | null;
+      if (!sub) return;
+      const open = !sub.hidden;
+      sub.hidden = open;
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+</script>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--color-white);
+    transition: box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .hdr.is-stuck { box-shadow: var(--shadow-header); }
+
+  .hdr--transparent { position: fixed; inset-inline: 0; background: transparent; }
+  .hdr--transparent .hdr__main { background: transparent; border-bottom: 1px solid var(--color-white-12); }
+  .hdr--transparent .hdr__link { color: var(--color-white); }
+  .hdr--transparent.is-stuck { background: var(--color-white); }
+  .hdr--transparent.is-stuck .hdr__main { border-bottom-color: transparent; }
+  .hdr--transparent.is-stuck .hdr__link { color: var(--color-forest); }
+
+  /* Top utility bar */
+  .hdr__bar {
+    background: var(--color-forest);
+    color: var(--color-white);
+    font-size: var(--text-sm);
+  }
+  .hdr__bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.75rem;
+  }
+  .hdr__contact { display: flex; align-items: center; gap: 1rem; }
+  .hdr__contact a:hover { color: var(--color-accent); }
+  .hdr__sep { width: 1px; height: 1rem; background: var(--color-white-12); }
+  .hdr__note { margin: 0; color: var(--color-on-dark-muted); }
+
+  /* Main bar */
+  .hdr__main-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: var(--header-h);
+  }
+  .hdr__logo img { width: 8.125rem; height: auto; }
+
+  .hdr__menu { display: flex; align-items: center; gap: 2rem; }
+  .hdr__item { position: relative; }
+
+  .hdr__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding-block: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: var(--weight-semibold);
+    color: var(--color-forest);
+  }
+  .hdr__link:hover,
+  .hdr__link.is-active { color: var(--color-accent); }
+  .hdr__caret { width: 0.625rem; height: 0.375rem; transition: transform var(--dur-fast) var(--ease-out); }
+  .hdr__item:hover .hdr__caret { transform: rotate(180deg); }
+
+  .hdr__dropdown {
+    position: absolute;
+    top: 100%;
+    left: -1rem;
+    min-width: 14rem;
+    padding: 0.75rem 0;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lift);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.625rem);
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out),
+      visibility var(--dur-fast);
+  }
+  .hdr__item:hover .hdr__dropdown,
+  .hdr__item:focus-within .hdr__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .hdr__dropdown a {
+    display: block;
+    padding: 0.5rem 1.25rem;
+    font-size: var(--text-base);
+    color: var(--color-forest);
+  }
+  .hdr__dropdown a:hover,
+  .hdr__dropdown a.is-active { color: var(--color-accent); }
+
+  .hdr__actions { display: flex; align-items: center; gap: 1rem; }
+
+  .hdr__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3125rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .hdr__burger span {
+    display: block;
+    height: 2px;
+    width: 1.5rem;
+    background: currentColor;
+    border-radius: 2px;
+  }
+
+  /* Drawer */
+  .hdr__drawer {
+    position: fixed;
+    inset-block: 0;
+    right: 0;
+    width: min(21.875rem, 85vw);
+    z-index: var(--z-overlay);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--color-white);
+    overflow-y: auto;
+  }
+  .hdr__drawer[hidden] { display: none; }
+  .hdr__drawer-head { display: flex; align-items: center; justify-content: space-between; }
+  .hdr__close svg { width: 1.5rem; height: 1.5rem; }
+  .hdr__drawer-menu { display: flex; flex-direction: column; }
+  .hdr__drawer-menu > li { border-bottom: 1px solid var(--color-border); }
+  .hdr__drawer-menu a,
+  .hdr__drawer-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.875rem 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: var(--weight-semibold);
+    color: var(--color-forest);
+    text-align: left;
+  }
+  .hdr__drawer-toggle svg { width: 0.625rem; height: 0.375rem; }
+  .hdr__drawer-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .hdr__drawer-sub { padding: 0 0 0.75rem 1rem; }
+  .hdr__drawer-sub[hidden] { display: none; }
+  .hdr__drawer-sub a { padding: 0.5rem 0; font-family: var(--font-body); font-size: var(--text-base); font-weight: 400; }
+  .hdr__drawer-foot { display: flex; flex-direction: column; gap: 0.375rem; margin-top: auto; font-size: var(--text-sm); }
+
+  .hdr__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-overlay) - 1);
+    background: var(--color-scrim);
+  }
+  .hdr__scrim[hidden] { display: none; }
+
+  @media (max-width: 1199px) {
+    .hdr__nav { display: none; }
+    .hdr__burger { display: flex; }
+    .hdr__cta { display: none; }
+  }
+  @media (max-width: 767px) {
+    .hdr__note { display: none; }
+    .hdr__bar-inner { justify-content: center; }
+  }
+</style>

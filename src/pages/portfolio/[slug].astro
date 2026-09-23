@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import PortfolioDetail from '../../components/sections/PortfolioDetail.astro';
+import { projects, getAdjacent, type Project } from '../../data/projects';
+
+/** One static page per project — no runtime routing, no fallbacks needed. */
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const adjacent = getAdjacent(project.slug);
+---
+
+<Base title={`${project.title} — Solor`} description={project.excerpt}>
+  <PageHero
+    title={project.title}
+    crumbs={[{ label: 'Projects', href: '/portfolio/' }, { label: project.title }]}
+  />
+  <PortfolioDetail project={project} prev={adjacent?.prev} next={adjacent?.next} />
+</Base>

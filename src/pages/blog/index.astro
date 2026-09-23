@@ -1,0 +1,109 @@
+---
+/** Blog archive — three-up card grid, newest first. */
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import BlogGrid from '../../components/sections/BlogGrid.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Base
+  title="Blog — Solor"
+  description="News, field notes and technical explainers on solar technology, renewable power and running an array well."
+>
+  <PageHero title="Blog" crumbs={[{ label: 'Blog' }]} />
+
+  <section class="section">
+    <div class="container-site">
+      <p class="archive-filter" id="archive-filter" hidden>
+        <span id="archive-filter-text"></span>
+        <a href="/blog">Clear filter</a>
+      </p>
+
+      <BlogGrid posts={posts} />
+
+      <p class="archive-empty" id="archive-empty" hidden>
+        No posts matched that search. <a href="/blog">Show every post</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  /**
+   * Filters the archive from the sidebar's search / category / tag links.
+   * The whole collection is already in the page, so this is a class toggle
+   * rather than a fetch — and with JS off the archive simply shows in full.
+   */
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') ?? '').trim().toLowerCase();
+  const category = (params.get('category') ?? '').trim().toLowerCase();
+  const tag = (params.get('tag') ?? '').trim().toLowerCase();
+
+  if (q || category || tag) {
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>('.blog-card'),
+    );
+    let shown = 0;
+
+    for (const card of cards) {
+      const d = card.dataset;
+      const match =
+        (!q || (d.postText ?? '').includes(q) || (d.postTags ?? '').includes(q)) &&
+        (!category || d.postCategory === category) &&
+        (!tag || (d.postTags ?? '').split('|').includes(tag));
+
+      card.hidden = !match;
+      if (match) shown++;
+    }
+
+    const label = q
+      ? `Search results for “${q}”`
+      : category
+        ? `Category: ${params.get('category')}`
+        : `Tag: ${params.get('tag')}`;
+
+    const notice = document.getElementById('archive-filter');
+    const text = document.getElementById('archive-filter-text');
+    if (notice && text) {
+      text.textContent = `${label} — ${shown} post${shown === 1 ? '' : 's'}`;
+      notice.hidden = false;
+    }
+
+    const empty = document.getElementById('archive-empty');
+    if (empty && shown === 0) empty.hidden = false;
+  }
+</script>
+
+<style>
+  .archive-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 0.875rem 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-heading);
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-pill);
+  }
+  .archive-filter a,
+  .archive-empty a {
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .archive-filter a:hover,
+  .archive-empty a:hover { color: var(--color-text); }
+
+  .archive-empty {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--color-text);
+  }
+</style>

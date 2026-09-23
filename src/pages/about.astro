@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import AboutIntro from '../components/sections/AboutIntro.astro';
+import AboutValues from '../components/sections/AboutValues.astro';
+---
+
+<Base
+  title="About Us — Solor"
+  description="Solor designs, installs and maintains solar energy systems — meet the engineers and the standards behind every install."
+>
+  <PageHero title="About us" crumbs={[{ label: 'About Us' }]} />
+  <AboutIntro />
+  <AboutValues />
+</Base>

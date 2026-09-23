@@ -1,0 +1,133 @@
+---
+/** Pill button matching the theme: lime fill, forest text, arrow on hover. */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'outline' | 'dark' | 'light';
+  size?: 'md' | 'lg';
+  class?: string;
+  type?: 'button' | 'submit';
+  [key: string]: any;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  type = 'button',
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : type}
+  class:list={['btn', `btn--${variant}`, `btn--${size}`, className]}
+  {...rest}
+>
+  <span class="btn__label"><slot /></span>
+  <span class="btn__icon" aria-hidden="true">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M2 8h11M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </span>
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--color-accent);
+    --btn-fg: var(--color-forest);
+    --btn-border: var(--color-accent);
+    --btn-bg-hover: var(--color-forest);
+    --btn-fg-hover: var(--color-white);
+    --btn-border-hover: var(--color-forest);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.875rem;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    line-height: 1.6;
+    color: var(--btn-fg);
+    background: var(--btn-bg);
+    border: 2px solid var(--btn-border);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  /* Fill wipes in from the left rather than cross-fading — matches the
+     original theme's hover, and animating transform keeps it composited. */
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-bg-hover);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--btn-fg-hover);
+    border-color: var(--btn-border-hover);
+  }
+
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .btn__icon {
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .btn__icon svg { width: 100%; height: 100%; }
+  .btn:hover .btn__icon { transform: translateX(3px); }
+
+  .btn--lg { padding: 1.125rem 2.375rem; }
+
+  .btn--outline {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-forest);
+    --btn-border: var(--color-forest);
+    --btn-bg-hover: var(--color-accent);
+    --btn-fg-hover: var(--color-forest);
+    --btn-border-hover: var(--color-accent);
+  }
+
+  .btn--dark {
+    --btn-bg: var(--color-forest);
+    --btn-fg: var(--color-white);
+    --btn-border: var(--color-forest);
+    --btn-bg-hover: var(--color-accent);
+    --btn-fg-hover: var(--color-forest);
+    --btn-border-hover: var(--color-accent);
+  }
+
+  .btn--light {
+    --btn-bg: var(--color-white);
+    --btn-fg: var(--color-forest);
+    --btn-border: var(--color-white);
+    --btn-bg-hover: var(--color-accent);
+    --btn-fg-hover: var(--color-forest);
+    --btn-border-hover: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn::before { transition: none; }
+  }
+</style>

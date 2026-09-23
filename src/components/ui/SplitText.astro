@@ -1,0 +1,72 @@
+---
+/**
+ * Build-time text splitter.
+ *
+ * The original theme loaded SplitType and chopped headings into spans in the
+ * browser, which cost a reflow per heading and shifted layout on load. Astro
+ * renders to static HTML, so we do the identical split here at build time and
+ * ship the spans pre-made. Runtime cost: zero.
+ *
+ * Accessibility: the split spans are hidden from assistive tech and the real
+ * sentence is exposed once via aria-label, so screen readers never read the
+ * text out character by character.
+ */
+interface Props {
+  text: string;
+  /** `words` animates whole words, `chars` animates single characters. */
+  mode?: 'words' | 'chars';
+  /** Rendered element — headings should keep their semantic level. */
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
+  class?: string;
+}
+
+const { text, mode = 'words', as: Tag = 'h2', class: className = '' } = Astro.props;
+
+const words = text.split(/(\s+)/).filter((w) => w.length > 0);
+const animClass = mode === 'chars' ? 'split-chars' : 'split-words';
+---
+
+<Tag class:list={[animClass, className]} aria-label={text}>
+  {
+    words.map((word) =>
+      /^\s+$/.test(word) ? (
+        <span aria-hidden="true">{word}</span>
+      ) : mode === 'chars' ? (
+        <span class="split-word-group" aria-hidden="true">
+          {[...word].map((ch) => <span class="split-char">{ch}</span>)}
+        </span>
+      ) : (
+        <span class="split-word" aria-hidden="true">{word}</span>
+      ),
+    )
+  }
+</Tag>
+
+<style>
+  /* Keeps words from breaking mid-way across lines when split into chars. */
+  .split-word-group {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  /* On very narrow screens a single long word can be wider than the viewport.
+     Keeping `nowrap` there would push the page sideways, so below 30rem we let
+     a word break between characters — the spans are already per-character, so
+     it breaks cleanly rather than clipping. */
+  /* On phones the per-character boxes are the problem, not the solution:
+     every char is an atomic `inline-block`, so a long title cannot break
+     cleanly and pushes the page sideways. Below 30rem we let the characters
+     flow as ordinary inline text. `transform` does not apply to non-replaced
+     inline boxes, so the slide is dropped there — but `opacity` still does,
+     so the staggered fade survives and the heading simply wraps correctly. */
+  @media (max-width: 30rem) {
+    .split-word-group {
+      display: inline;
+      white-space: normal;
+    }
+    .split-word-group :global(.split-char) {
+      display: inline;
+    }
+  }
+</style>

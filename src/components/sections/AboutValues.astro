@@ -1,0 +1,144 @@
+---
+/**
+ * "Why choose us" value cards — four white tiles on the mist band, matching
+ * the original's Providing Solar Energy Solutions row.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+
+type IconName = 'power' | 'shield' | 'quality' | 'support';
+
+interface Value {
+  icon: IconName;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  values?: Value[];
+}
+
+const {
+  eyebrow = 'Why Choose Us',
+  title = 'Providing Solar Energy Solutions',
+  values = [
+    {
+      icon: 'power',
+      title: 'Efficiency & Power',
+      text: 'Ut ut eros risus. In luctus fringilla augue, eget ultricies purus. Sed mauris a nisl.',
+    },
+    {
+      icon: 'shield',
+      title: 'Trust & Warranty',
+      text: 'Ut ut eros risus. In luctus fringilla augue, eget ultricies purus. Sed mauris a nisl.',
+    },
+    {
+      icon: 'quality',
+      title: 'High Quality Work',
+      text: 'Ut ut eros risus. In luctus fringilla augue, eget ultricies purus. Sed mauris a nisl.',
+    },
+    {
+      icon: 'support',
+      title: '24*7 Support',
+      text: 'Ut ut eros risus. In luctus fringilla augue, eget ultricies purus. Sed mauris a nisl.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="values section">
+  <div class="container-site">
+    <SectionHeading eyebrow={eyebrow} title={title} align="center" class="values__head" />
+
+    <ul class="values__grid">
+      {values.map((v, i) => (
+        <li class="values__card" data-anim="up" data-anim-delay={`${i * 0.12}`}>
+          <span class="values__icon" aria-hidden="true">
+            {v.icon === 'power' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z" stroke-linejoin="round" />
+              </svg>
+            )}
+            {v.icon === 'shield' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M12 2.5l7.5 3v6c0 4.6-3.1 8.6-7.5 10-4.4-1.4-7.5-5.4-7.5-10v-6z" stroke-linejoin="round" />
+                <path d="M8.75 12l2.25 2.25 4.25-4.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+            {v.icon === 'quality' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="9" r="5.5" />
+                <path d="M8 13.5L6.5 21.5 12 19l5.5 2.5-1.5-8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+            {v.icon === 'support' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="12" r="9.5" />
+                <path d="M12 6.75V12l3.5 2.25" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+          </span>
+
+          <h3 class="values__title">{v.title}</h3>
+          <p class="values__text">{v.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .values {
+    background: var(--color-bg-alt);
+  }
+
+  .values :global(.values__head) { margin-bottom: 3.25rem; }
+
+  .values__grid {
+    display: grid;
+    gap: 1.875rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+
+  .values__card {
+    padding: 2.25rem 1.75rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .values__card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .values__icon {
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-parchment);
+    color: var(--color-heading);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .values__icon svg { width: 1.875rem; height: 1.875rem; }
+  .values__card:hover .values__icon { background: var(--color-accent); }
+
+  .values__title {
+    font-size: var(--text-h5);
+    margin-bottom: 0.625rem;
+  }
+  .values__text {
+    color: var(--color-text);
+    font-size: var(--text-base);
+  }
+
+  @media (max-width: 575px) {
+    .values__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,143 @@
+/* =========================================================================
+   SOLOR — Design Tokens
+   Single source of truth. Every colour, font and rhythm value in the site
+   resolves back to a variable declared here. Re-skin the whole theme by
+   editing this file alone.
+   Values extracted from the original WordPress build
+   (themes/solor/assets/css/css-variable.css + computed styles).
+   ========================================================================= */
+
+:root {
+  /* ---------------------------------------------------------------------
+     BRAND PALETTE — raw values. Prefer the semantic aliases below in code.
+     --------------------------------------------------------------------- */
+  --color-forest: #163300;        /* deep green — headings, dark sections   */
+  --color-lime: #89ea5f;          /* signature accent — CTAs, highlights    */
+  --color-mist: #eff1ed;          /* soft off-white — alternating sections  */
+  --color-slate: #888888;         /* body copy                              */
+  --color-ink: #1d2327;           /* near-black — footer, overlays          */
+  --color-charcoal: #23282d;      /* dark UI surfaces                       */
+  --color-citron: #d2e761;        /* secondary accent — chart/graph fills   */
+  --color-parchment: #f8fbef;     /* faintest tint — subtle cards           */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Alpha variants (kept verbatim from the original theme) */
+  --color-white-12: #ffffff20;    /* hairline borders on dark               */
+  --color-forest-65: #163300a6;   /* image + hero overlays                  */
+
+  /* ---------------------------------------------------------------------
+     SEMANTIC ALIASES — what components actually reference.
+     --------------------------------------------------------------------- */
+  --color-primary: var(--color-forest);
+  --color-accent: var(--color-lime);
+  --color-secondary: var(--color-mist);
+  --color-text: var(--color-slate);
+  --color-heading: var(--color-forest);
+  --color-bg: var(--color-white);
+  --color-bg-alt: var(--color-mist);
+  --color-bg-dark: var(--color-forest);
+  --color-border: #e5e7e1;
+  --color-border-dark: var(--color-white-12);
+  --color-overlay: var(--color-forest-65);
+
+  --color-on-primary: var(--color-white);
+  --color-on-accent: var(--color-forest);
+  --color-on-dark: var(--color-white);
+  --color-on-dark-muted: rgb(255 255 255 / 0.5);
+
+  /* ---------------------------------------------------------------------
+     TYPOGRAPHY
+     Rajdhani = display / headings. Rubik = body / UI.
+     --------------------------------------------------------------------- */
+  --font-display: 'Rajdhani', system-ui, sans-serif;
+  --font-body: 'Rubik', system-ui, sans-serif;
+
+  --text-h1: 4.375rem;   /* 70px */
+  --text-h2: 2.875rem;   /* 46px */
+  --text-h3: 1.875rem;   /* 30px */
+  --text-h4: 1.5rem;     /* 24px */
+  --text-h5: 1.25rem;    /* 20px */
+  --text-h6: 1.125rem;   /* 18px */
+  --text-lead: 1.125rem; /* 18px */
+  --text-base: 1rem;     /* 16px */
+  --text-sm: 0.875rem;   /* 14px */
+
+  --leading-display: 1.1;
+  --leading-body: 1.6;
+
+  --weight-body: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---------------------------------------------------------------------
+     LAYOUT & RHYTHM
+     --------------------------------------------------------------------- */
+  --container-max: 1320px;
+  --container-pad: 0.9375rem;     /* 15px gutter, matches Bootstrap grid    */
+  --section-py: 6.25rem;          /* 100px vertical section rhythm          */
+  --section-py-sm: 3.75rem;       /* 60px on mobile                         */
+
+  --radius-pill: 3.125rem;        /* 50px — buttons                         */
+  --radius-lg: 1.25rem;           /* 20px — cards                           */
+  --radius-md: 0.625rem;          /* 10px                                   */
+  --radius-sm: 0.3125rem;         /* 5px                                    */
+
+  --shadow-card: 0 10px 40px rgb(22 51 0 / 0.08);
+  --shadow-lift: 0 20px 50px rgb(22 51 0 / 0.14);
+  --shadow-header: 0 6px 24px rgb(22 51 0 / 0.08);
+
+  /* Dimmer behind the mobile drawer */
+  --color-scrim: rgb(22 51 0 / 0.5);
+
+  /* ---------------------------------------------------------------------
+     MOTION
+     Mirrors the original GSAP timings so the rebuild feels identical.
+     --------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);     /* = GSAP Power2.out (easeOutCubic) */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.3s;
+  --dur-base: 0.6s;
+  --dur-slow: 1s;                 /* image reveal + heading splits          */
+  --stagger: 0.05s;               /* per word / per char                    */
+  --reveal-delay: 0.5s;
+
+  --header-h: 6.25rem;            /* 100px                                  */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-cursor: 9999;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive overrides.
+
+   These MUST live here, unlayered, next to the tokens they override. Putting
+   them inside `@layer base` (as they were) silently does nothing: unlayered
+   declarations outrank layered ones in the cascade, so the `:root` block above
+   would keep winning and headings would render at desktop size on phones.
+   ------------------------------------------------------------------------- */
+@media (max-width: 1199px) {
+  :root {
+    --text-h1: 3.25rem;   /* 52px */
+    --text-h2: 2.375rem;  /* 38px */
+    --text-h3: 1.625rem;  /* 26px */
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --text-h1: 2.5rem;    /* 40px */
+    --text-h2: 2rem;      /* 32px */
+    --text-h3: 1.5rem;    /* 24px */
+    --section-py: var(--section-py-sm);
+    --header-h: 4.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --text-h1: 2.125rem;  /* 34px */
+    --text-h2: 1.75rem;   /* 28px */
+  }
+}

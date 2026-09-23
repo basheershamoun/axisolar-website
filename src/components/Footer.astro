@@ -1,0 +1,262 @@
+---
+/** Site footer: scrolling marquee, contact strip, link columns, legal bar. */
+import { site, socials } from '../data/site';
+
+const marquee = [
+  'Generate Your Own Power',
+  'Reap The Returns',
+  'Heal The World',
+  'Efficiency & Power',
+  '24×7 Support',
+];
+
+const contact = [
+  { label: 'Support & Email', value: 'info@domainname.com', href: 'mailto:info@domainname.com', icon: 'mail' },
+  { label: 'Customer Support', value: '+01 547 547 5478', href: 'tel:+015475475478', icon: 'phone' },
+  { label: 'Our Location', value: 'Street no, City, Country 123456', href: null, icon: 'pin' },
+];
+
+const columns = [
+  {
+    title: 'Quick Links',
+    links: [
+      { label: 'Home', href: '/' },
+      { label: 'About Us', href: '/about' },
+      { label: 'Services', href: '/services' },
+      { label: 'Blog', href: '/blog' },
+      { label: 'Contact Us', href: '/contact' },
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      { label: 'Hybrid Energy', href: '/services/hybrid-energy' },
+      { label: 'Renewable Energy', href: '/services/renewable-energy' },
+      { label: 'Solar Maintenance', href: '/services/solar-maintenance' },
+      { label: 'Solar PV Systems', href: '/services/solar-pv-systems' },
+      { label: 'Solar Solutions', href: '/services/solar-solutions' },
+    ],
+  },
+  {
+    title: 'Useful Links',
+    links: [
+      { label: 'Privacy Policy', href: '#' },
+      { label: 'Term & Conditions', href: '#' },
+      { label: 'Warranty', href: '#' },
+      { label: 'Support', href: '#' },
+      { label: 'Damage Policy', href: '#' },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="ftr">
+  <!-- Marquee. Duplicated once and shifted by exactly -50% so the loop is
+       seamless; aria-hidden on the copy so it isn't announced twice. -->
+  <div class="ftr__marquee" role="marquee" aria-label="Solor benefits">
+    <div class="ftr__marquee-track">
+      {[0, 1].map((copy) => (
+        <ul class="ftr__marquee-list" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {marquee.map((item) => (
+            <li>
+              <span class="ftr__marquee-dot" aria-hidden="true"></span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+
+  <div class="ftr__body">
+    <div class="container-site">
+      <ul class="ftr__contact">
+        {contact.map((c) => (
+          <li class="ftr__contact-item">
+            <span class="ftr__contact-icon" aria-hidden="true">
+              {c.icon === 'mail' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <rect x="2.5" y="5" width="19" height="14" rx="2" /><path d="M3 7l9 6 9-6" />
+                </svg>
+              )}
+              {c.icon === 'phone' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M5 3h4l2 5-3 2a14 14 0 006 6l2-3 5 2v4a2 2 0 01-2 2A17 17 0 013 5a2 2 0 012-2z" />
+                </svg>
+              )}
+              {c.icon === 'pin' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" />
+                </svg>
+              )}
+            </span>
+            <div>
+              <p class="ftr__contact-label">{c.label}</p>
+              {c.href ? <a href={c.href} class="ftr__contact-value">{c.value}</a>
+                      : <p class="ftr__contact-value">{c.value}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="ftr__grid">
+        <div class="ftr__brand">
+          <a href="/" aria-label={`${site.name} — home`}>
+            <img src="/images/footer-logo.svg" alt={site.name} width="140" height="38" />
+          </a>
+          <p>
+            Green Energy is a long established fact that a reader will be distracted by the
+            readable content of a page when.
+          </p>
+          <ul class="ftr__social">
+            {socials.map((s) => (
+              <li>
+                <a href={s.href} aria-label={s.label} rel="noopener noreferrer" target="_blank">
+                  <span class="ftr__social-glyph" aria-hidden="true">{s.label.charAt(0)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {columns.map((col) => (
+          <nav class="ftr__col" aria-label={col.title}>
+            <h3 class="ftr__col-title">{col.title}</h3>
+            <ul>
+              {col.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          </nav>
+        ))}
+      </div>
+
+      <div class="ftr__legal">
+        <p>Copyright © {year} {site.name}. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { background: var(--color-forest); color: var(--color-on-dark); }
+
+  /* ---- Marquee ---------------------------------------------------------
+     Animates transform only, so it runs on the compositor. */
+  .ftr__marquee {
+    padding-block: 1.25rem;
+    background: var(--color-accent);
+    color: var(--color-forest);
+    overflow: hidden;
+  }
+  .ftr__marquee-track {
+    display: flex;
+    width: max-content;
+    animation: ftr-scroll 30s linear infinite;
+  }
+  .ftr__marquee:hover .ftr__marquee-track { animation-play-state: paused; }
+  .ftr__marquee-list { display: flex; align-items: center; }
+  .ftr__marquee-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 2rem;
+    padding-inline: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .ftr__marquee-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-forest);
+  }
+  @keyframes ftr-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ftr__marquee-track { animation: none; }
+    .ftr__marquee { overflow-x: auto; }
+  }
+
+  /* ---- Body ------------------------------------------------------------ */
+  .ftr__body { padding-top: 4.375rem; }
+
+  .ftr__contact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-bottom: 3.125rem;
+    border-bottom: 1px solid var(--color-border-dark);
+  }
+  .ftr__contact-item { display: flex; align-items: center; gap: 1rem; }
+  .ftr__contact-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: var(--color-white-12);
+    color: var(--color-accent);
+  }
+  .ftr__contact-icon svg { width: 1.375rem; height: 1.375rem; }
+  .ftr__contact-label { margin: 0; font-size: var(--text-sm); color: var(--color-on-dark-muted); }
+  .ftr__contact-value {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: var(--weight-semibold);
+    color: var(--color-white);
+  }
+  a.ftr__contact-value:hover { color: var(--color-accent); }
+
+  .ftr__grid {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: 2.5rem;
+    padding-block: 3.75rem;
+  }
+  .ftr__brand p { margin: 1.25rem 0; color: var(--color-on-dark-muted); max-width: 22rem; }
+  .ftr__social { display: flex; gap: 0.625rem; }
+  .ftr__social a {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-border-dark);
+    border-radius: 50%;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .ftr__social a:hover { background: var(--color-accent); color: var(--color-forest); }
+
+  .ftr__col-title {
+    margin-bottom: 1.25rem;
+    font-size: 1.375rem;
+    color: var(--color-white);
+  }
+  .ftr__col li + li { margin-top: 0.625rem; }
+  .ftr__col a { color: var(--color-on-dark-muted); }
+  .ftr__col a:hover { color: var(--color-accent); }
+
+  .ftr__legal {
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--color-border-dark);
+    text-align: center;
+  }
+  .ftr__legal p { margin: 0; font-size: var(--text-sm); color: var(--color-on-dark-muted); }
+
+  @media (max-width: 991px) {
+    .ftr__contact { grid-template-columns: 1fr; }
+    .ftr__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 575px) {
+    .ftr__grid { grid-template-columns: 1fr; }
+  }
+</style>

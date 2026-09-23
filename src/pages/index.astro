@@ -1,0 +1,41 @@
+---
+/**
+ * Homepage.
+ *
+ * Section order mirrors the original demo, established by reading the rendered
+ * page rather than the saved markup — the Swiper-driven bands (services,
+ * testimonials) render empty in a static capture, so the DOM order alone is
+ * misleading.
+ */
+import Base from '../layouts/Base.astro';
+
+import HomeHero from '../components/sections/HomeHero.astro';
+import HomeAbout from '../components/sections/HomeAbout.astro';
+import HomeServices from '../components/sections/HomeServices.astro';
+import HomeProcess from '../components/sections/HomeProcess.astro';
+import HomeVideoCta from '../components/sections/HomeVideoCta.astro';
+import HomeSkills from '../components/sections/HomeSkills.astro';
+import HomeWhyChoose from '../components/sections/HomeWhyChoose.astro';
+import HomeProjects from '../components/sections/HomeProjects.astro';
+import HomeTestimonials from '../components/sections/HomeTestimonials.astro';
+import HomeStats from '../components/sections/HomeStats.astro';
+import HomeBlog from '../components/sections/HomeBlog.astro';
+---
+
+<Base
+  title="Solor — Powering the Future With Renewable Energy"
+  description="Solar PV systems, hybrid energy, maintenance and renewable solutions. Generate your own power, reap the returns and heal the world."
+  transparentHeader
+>
+  <HomeHero />
+  <HomeAbout />
+  <HomeServices />
+  <HomeProcess />
+  <HomeVideoCta />
+  <HomeSkills />
+  <HomeWhyChoose />
+  <HomeProjects />
+  <HomeTestimonials />
+  <HomeStats />
+  <HomeBlog />
+</Base>

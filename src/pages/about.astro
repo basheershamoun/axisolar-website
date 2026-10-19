@@ -3,13 +3,19 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import AboutIntro from '../components/sections/AboutIntro.astro';
 import AboutValues from '../components/sections/AboutValues.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
 ---
 
 <Base
-  title="About Us — Solor"
-  description="Solor designs, installs and maintains solar energy systems — meet the engineers and the standards behind every install."
+  title="About Us — AXI SOLAR"
+  description="AXI SOLAR manufactures solar panels, hybrid inverters and EV chargers, guided by three core values: quality, innovation and sustainability."
 >
-  <PageHero title="About us" crumbs={[{ label: 'About Us' }]} />
+  <PageHero title="Empowering the Future" crumbs={[{ label: 'About Us' }]} image="/images/axi/panel-field.webp" />
   <AboutIntro />
   <AboutValues />
+  <CtaBand
+    eyebrow="Work with us"
+    title="Take the Next Step Towards Clean Energy"
+    text="Whether you install, distribute or specify, we will send the datasheets and answers you need for your next project."
+  />
 </Base>

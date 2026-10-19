@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import Button from '../../components/ui/Button.astro';
+import FeaturedPanel from '../../components/panels/FeaturedPanel.astro';
+import { panels } from '../../data/products/panels';
+
+const current = panels.filter((p) => p.status === 'current');
+const archived = panels.filter((p) => p.status === 'discontinued');
+
+/* Facts only from the LUMEN datasheet. */
+const reasons = [
+  {
+    title: 'Very low LID',
+    text: 'N-type cells have very low light-induced degradation by nature, which limits early power loss.',
+  },
+  {
+    title: 'Rear-side yield',
+    text: '80 ± 5 % bifaciality. At a 10 % rear gain a 640 W module is rated 704 W; actual gain depends on mounting height, tilt and ground albedo.',
+  },
+  {
+    title: 'Heat tolerance',
+    text: 'Pmax temperature coefficient of −0.28 %/°C and NMOT of 45 ± 2 °C, for less output loss on hot roofs and arrays.',
+  },
+  {
+    title: 'Double-glass build',
+    text: '2.0 + 2.0 mm heat-strengthened glass, 5400 Pa front / 2400 Pa rear static load, tested with 25 mm hail at 23 m/s.',
+  },
+];
+---
+
+<Base
+  title="Solar Panels: N-type Bifacial Modules — AXI SOLAR"
+  description="AXI SOLAR N-type bifacial double-glass solar modules for installers, distributors and EPCs. AXI LUMEN 620–640 W, up to 23.7 % efficiency, 1500 V. Full datasheets."
+>
+  <PageHero title="Solar Panels" crumbs={[{ label: 'Solar Panels' }]} />
+
+  <section class="section">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="Modules"
+        title="N-type bifacial modules for utility, C&I and residential projects"
+        text="AXI modules are specified for 1500 V systems and supplied by the pallet and container. Every product page lists the full STC, NMOT and bifacial electrical data, mechanical data and packing quantities from the datasheet."
+      />
+      <div class="panels-featured">
+        {current.map((p) => <FeaturedPanel product={p} href={`/solar-panels/${p.slug}`} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section panels-why">
+    <div class="container-site">
+      <SectionHeading eyebrow="Technology" title="Why N-type bifacial" />
+      <ul class="panels-why__grid">
+        {reasons.map((r, i) => (
+          <li data-anim="up" data-anim-delay={i * 0.08}>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {archived.length > 0 && (
+    <section class="section">
+      <div class="container-site panels-archive" data-anim="up">
+        <div>
+          <h2>Looking for an earlier module?</h2>
+          <p>
+            Specifications and datasheets for discontinued models
+            ({archived.map((p) => p.name).join(', ')}) are kept for existing installations.
+          </p>
+        </div>
+        <Button href="/solar-panels/archive" variant="outline">View the archive</Button>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .panels-featured { margin-top: 3rem; display: grid; gap: 2rem; }
+
+  .panels-why { background: var(--color-bg-alt); }
+  .panels-why__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .panels-why__grid li {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    border-top: 3px solid var(--color-accent);
+  }
+  .panels-why__grid h3 { font-size: var(--text-h5); margin-bottom: 0.5rem; }
+  .panels-why__grid p { margin: 0; }
+
+  .panels-archive {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .panels-archive h2 { font-size: var(--text-h4); margin-bottom: 0.5rem; }
+  .panels-archive p { margin: 0; }
+
+  @media (max-width: 991px) { .panels-why__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 575px) {
+    .panels-why__grid { grid-template-columns: 1fr; }
+    .panels-archive { padding: 1.5rem; }
+  }
+</style>

@@ -9,7 +9,7 @@ interface Props {
   image?: string;
 }
 
-const { title, crumbs = [], image = '/images/header-banner.jpg' } = Astro.props;
+const { title, crumbs = [], image = '/images/axi/panel-field.webp' } = Astro.props;
 ---
 
 <section class="phero" style={`--phero-img: url('${image}')`}>
@@ -36,7 +36,7 @@ const { title, crumbs = [], image = '/images/header-banner.jpg' } = Astro.props;
     display: grid;
     place-items: center;
     min-height: 25rem;
-    padding-block: 5rem;
+    padding-block: var(--section-py);
     background-image: var(--phero-img);
     background-size: cover;
     background-position: center;
@@ -53,6 +53,7 @@ const { title, crumbs = [], image = '/images/header-banner.jpg' } = Astro.props;
   .phero :global(.phero__title) { color: var(--color-white); margin-bottom: 0.75rem; }
 
   .phero__crumbs {
+    color: rgb(255 255 255 / 0.82);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -62,9 +63,23 @@ const { title, crumbs = [], image = '/images/header-banner.jpg' } = Astro.props;
   }
   .phero__crumbs li + li::before {
     content: '/';
-    margin-right: 0.75rem;
+    margin-inline-end: 0.75rem;
     color: var(--color-accent);
   }
   .phero__crumbs a:hover { color: var(--color-accent); }
   .phero__crumbs [aria-current] { color: var(--color-accent); }
+
+  /* Breadcrumb links were 18px tall — below the 44px touch minimum. Padding
+     plus a negative margin grows the target without moving anything. */
+  .phero__crumbs a {
+    display: inline-block;
+    padding-block: 0.75rem;
+    margin-block: -0.75rem;
+  }
+
+  /* 400px of banner carrying 75px of text costs most of a phone's first
+     screen, on every inner page. */
+  @media (max-width: 767px) {
+    .phero { min-height: 16rem; }
+  }
 </style>

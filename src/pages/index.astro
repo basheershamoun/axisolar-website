@@ -1,41 +1,26 @@
 ---
-/**
- * Homepage.
- *
- * Section order mirrors the original demo, established by reading the rendered
- * page rather than the saved markup — the Swiper-driven bands (services,
- * testimonials) render empty in a static capture, so the DOM order alone is
- * misleading.
- */
+/** Homepage. */
 import Base from '../layouts/Base.astro';
 
 import HomeHero from '../components/sections/HomeHero.astro';
+import HomeProductLines from '../components/sections/HomeProductLines.astro';
+import HomeFeatured from '../components/sections/HomeFeatured.astro';
 import HomeAbout from '../components/sections/HomeAbout.astro';
-import HomeServices from '../components/sections/HomeServices.astro';
-import HomeProcess from '../components/sections/HomeProcess.astro';
-import HomeVideoCta from '../components/sections/HomeVideoCta.astro';
-import HomeSkills from '../components/sections/HomeSkills.astro';
 import HomeWhyChoose from '../components/sections/HomeWhyChoose.astro';
-import HomeProjects from '../components/sections/HomeProjects.astro';
-import HomeTestimonials from '../components/sections/HomeTestimonials.astro';
 import HomeStats from '../components/sections/HomeStats.astro';
-import HomeBlog from '../components/sections/HomeBlog.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
 ---
 
 <Base
-  title="Solor — Powering the Future With Renewable Energy"
-  description="Solar PV systems, hybrid energy, maintenance and renewable solutions. Generate your own power, reap the returns and heal the world."
+  title="AXI SOLAR — Solar Panels, Hybrid Inverters & EV Chargers"
+  description="N-type bifacial solar panels up to 640 W, 48 V hybrid inverters from 3 to 20 kW and AC/DC EV chargers up to 240 kW for installers, distributors and engineers."
   transparentHeader
 >
   <HomeHero />
+  <HomeProductLines />
+  <HomeFeatured />
   <HomeAbout />
-  <HomeServices />
-  <HomeProcess />
-  <HomeVideoCta />
-  <HomeSkills />
   <HomeWhyChoose />
-  <HomeProjects />
-  <HomeTestimonials />
   <HomeStats />
-  <HomeBlog />
+  <CtaBand />
 </Base>

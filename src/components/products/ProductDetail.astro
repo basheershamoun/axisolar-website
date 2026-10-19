@@ -1,0 +1,186 @@
+---
+/**
+ * Full product page body: hero with headline figures, feature list, spec
+ * table and an enquiry band. Pages only pick the product and breadcrumbs.
+ * The page's <h1> is the product name here — don't add a PageHero above it.
+ */
+import type { Product } from '../../data/products/types';
+import Button from '../ui/Button.astro';
+import SplitText from '../ui/SplitText.astro';
+import SpecTable from './SpecTable.astro';
+
+interface Crumb { label: string; href?: string }
+interface Props {
+  product: Product;
+  crumbs: Crumb[];
+}
+const { product, crumbs } = Astro.props;
+---
+
+<section class="pd-hero">
+  <div class="container-site pd-hero__grid">
+    <div class="pd-hero__copy">
+      <nav aria-label="Breadcrumb">
+        <ol class="pd-crumbs">
+          <li><a href="/">Home</a></li>
+          {crumbs.map((c) => <li>{c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}</li>)}
+          <li><span aria-current="page">{product.name}</span></li>
+        </ol>
+      </nav>
+      {product.status === 'discontinued' && (
+        <p class="pd-hero__notice" data-anim="up">Discontinued — specifications kept for existing installations.</p>
+      )}
+      {product.family && <p class="pd-hero__family" data-anim="up">{product.family}</p>}
+      <SplitText text={product.name} mode="chars" as="h1" class="pd-hero__title" />
+      <p class="pd-hero__tagline" data-anim="up" data-anim-delay="0.1">{product.tagline}</p>
+      <p data-anim="up" data-anim-delay="0.15">{product.summary}</p>
+
+      <dl class="pd-hero__stats" data-anim="up" data-anim-delay="0.2">
+        {product.highlights.map((h) => (
+          <div><dt>{h.label}</dt><dd>{h.value}</dd></div>
+        ))}
+      </dl>
+
+      <div class="pd-hero__actions" data-anim="up" data-anim-delay="0.25">
+        {product.datasheet && (
+          <Button href={product.datasheet} download>Download datasheet (PDF)</Button>
+        )}
+        <Button href={`/contact?product=${encodeURIComponent(product.name)}`} variant="outline">
+          Request a quote
+        </Button>
+      </div>
+    </div>
+
+    <div class="pd-hero__media reveal-image">
+      <img src={product.image} alt={product.imageAlt} fetchpriority="high" decoding="async" />
+    </div>
+  </div>
+</section>
+
+{product.features.length > 0 && (
+  <section class="section pd-features">
+    <div class="container-site">
+      <h2 data-anim="up">Key features</h2>
+      <ul class="pd-features__list">
+        {product.features.map((f, i) => (
+          <li data-anim="up" data-anim-delay={(i % 3) * 0.08}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<section class="section pd-specs" id="specifications">
+  <div class="container-site">
+    <h2 data-anim="up">Technical specifications</h2>
+    <SpecTable product={product} />
+    <p class="pd-specs__note">
+      Specifications are subject to change without notice. Refer to the latest datasheet for design work.
+    </p>
+  </div>
+</section>
+
+<section class="pd-cta">
+  <div class="container-site pd-cta__inner" data-anim="up">
+    <div>
+      <h2>Specifying {product.name} for a project?</h2>
+      <p>Send us your project details and our team will reply with pricing and availability.</p>
+    </div>
+    <Button href={`/contact?product=${encodeURIComponent(product.name)}`} variant="light">Contact sales</Button>
+  </div>
+</section>
+
+<style>
+  .pd-hero {
+    padding-block: calc(var(--section-py) * 0.6) var(--section-py);
+    background: var(--color-bg-alt);
+  }
+  .pd-hero__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .pd-crumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; font-size: var(--text-sm); }
+  .pd-crumbs li + li::before { content: '/'; margin-inline-end: 0.5rem; color: var(--color-slate); }
+  .pd-crumbs a:hover { color: var(--color-accent-ink); }
+  .pd-crumbs [aria-current] { color: var(--color-heading); }
+  .pd-hero__notice {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-inline-start: 3px solid var(--color-accent);
+    background: var(--color-white);
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+  }
+  .pd-hero__family {
+    margin-bottom: 0.5rem;
+    color: var(--color-accent-ink);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pd-hero__title { margin-bottom: 0.5rem; }
+  .pd-hero__tagline { color: var(--color-heading); font-size: var(--text-lead); font-weight: var(--weight-medium); }
+  .pd-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .pd-hero__stats div {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    border-inline-start: 3px solid var(--color-accent);
+  }
+  .pd-hero__stats dt { font-size: var(--text-sm); }
+  .pd-hero__stats dd { margin: 0; color: var(--color-heading); font-family: var(--font-display); font-size: var(--text-h4); font-weight: var(--weight-bold); }
+  .pd-hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+  /* Fixed-ratio box: reserves space before load, img contained inside it. */
+  .pd-hero__media { position: relative; aspect-ratio: 1; max-block-size: 34rem; }
+  .pd-hero__media img {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    object-fit: contain;
+  }
+
+  .pd-features__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .pd-features__list li {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .pd-features__list svg { flex: none; width: 1.5rem; height: 1.5rem; color: var(--color-accent-ink); }
+
+  .pd-specs { padding-top: 0; }
+  .pd-specs h2 { margin-bottom: 2rem; }
+  .pd-specs__note { margin-top: 1rem; font-size: var(--text-sm); }
+
+  .pd-cta { background: var(--color-forest); color: var(--color-on-dark-muted); padding-block: 4rem; }
+  .pd-cta__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem; }
+  .pd-cta h2 { color: var(--color-on-dark); font-size: var(--text-h3); margin-bottom: 0.5rem; }
+
+  @media (max-width: 991px) {
+    .pd-hero__grid { grid-template-columns: 1fr; }
+    .pd-hero__media { order: -1; }
+    .pd-hero__media { max-block-size: 22rem; }
+    .pd-features__list { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 575px) {
+    .pd-features__list { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import ProductCard from '../../components/products/ProductCard.astro';
+import InverterComparison from '../../components/inverters/InverterComparison.astro';
+import { inverters } from '../../data/products/inverters';
+---
+
+<Base
+  title="Hybrid Inverters, 3–20 kW Single- and Three-Phase — AXI SOLAR"
+  description="AXI hybrid inverters for 48 V low-voltage batteries: VERO 3–6 kW and NERO 8–12 kW single-phase, FORZA 6–20 kW three-phase. Specifications and datasheets."
+>
+  <PageHero title="Hybrid inverters" crumbs={[{ label: 'Inverters' }]} />
+
+  <section class="section">
+    <div class="container-site">
+      <SectionHeading
+        eyebrow="AXI hybrid inverters"
+        title="Single- and three-phase hybrid inverters for 48 V batteries"
+        text="Three families covering 3 kW to 20 kW. All support lithium-ion or lead-acid batteries (40–60 V), generator, smart load and AC coupling, with < 10 ms backup transfer and parallel operation up to 9 units."
+      />
+      <ul class="inv-grid" role="list">
+        {inverters.map((p, i) => (
+          <li><ProductCard product={p} href={`/inverters/${p.slug}`} delay={i * 0.1} /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <InverterComparison />
+</Base>
+
+<style>
+  .inv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 991px) { .inv-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 575px) { .inv-grid { grid-template-columns: 1fr; } }
+</style>

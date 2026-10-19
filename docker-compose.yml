@@ -1,0 +1,16 @@
+services:
+  app:
+    image: node:24-slim
+    working_dir: /app
+    environment:
+      ASTRO_TELEMETRY_DISABLED: "1"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "4321:4321"
+    # rm: a killed container leaves a stale Astro dev lock that blocks the next start
+    command: sh -c "rm -f .astro/dev.json; [ -d node_modules/astro ] || npm ci; npm run dev -- --host 0.0.0.0"
+
+volumes:
+  node_modules:

@@ -1,0 +1,160 @@
+Make Solar Energy More Efficient!
+AXIHJT101
+HJT Bifacial Module
+
+         Based on 210mm wafer, N-Type bifacial HJT half cut cells
+
+         Module power up to 585W, Module efficiency up to 22.40%
+
+         Use super MBB half-cut cell technology to minimize micro-crack
+         impacts and no-cutting loss on modules
+
+         The front generation power is 30% higher than the conventional module
+         and the back power is 25% higher
+
+         No BO-LID, excellent anti-LeTID & anti-PID performance. Low power
+         degradation, high energy yield
+
+
+         Better shading tolerance
+
+         Heavy snow load up to 5400 Pa, wind load up to 2400 Pa
+
+
+
+
+555W~585W                                                                    HJT
+Size ＞ 2 sqm Hetero-junction Technology
+15     15-Year Warranty for Materials and Processing
+ 30    30-Year Warranty for Extra Linear Power Output
+
+100%     98.5%
+         98%
+95%
+                                                90%      89%
+90%
+85%                                                             AXI Solar                 PERC Module
+                                               84%            Compared with traditional PERC solar module
+80%                                                           N-Type solar module have a power guarantee of up to 30 years.
+                                                              Less than 1.5% attenuation in the 1st year
+75%                                                           the annual attenuation from the 2nd year is no more than 0.4%
+                                                              and the power is no less than 89% until the 30th year.
+
+
+       0 1      5      10       15      20       25      30
+
+
+
+www.axisolar.com
+AXIHJT101
+STC/NMOT STC (Standard Test Conditions): Irradiance 1000 W/ ㎡ , Cell temperature :25 °C, AM1.5 .
+         NMOT (Nominal Module Operating Temperature): Irradiance 800 W/ ㎡ , AM1.5,temperature20 °C,wind speed 1 m/s.
+
+Model                            AXIHJT110-555                       AXIHJT110-560              AXIHJT110-565                AXIHJT110-570                  AXIHJT110-575                AXIHJT110-580                  AXIHJT110-585
+Power Tolerance
+(0~+5W)                          STC        NMOT                     STC          NMOT         STC           NMOT            STC           NMOT            STC          NMOT         STC           NMOT                 STC                 NMOT
+Pmax (W)                         555         429                 560              433          565            437            570            441            575          445          580            449                 585                 453
+Vmp (V)                         33.98        32.33              34.17             32.54       34.35           32.71      34.53             32.89          34.71         33.09       34.88          33.26              35.05                 33.45
+Imp (A)                         16.33       13.27               16.39             13.31       16.45          13.36       16.51             13.41          16.57         13.45       16.63          13.50              16.69                 13.54
+Voc (V)                         40.49        38.99              40.77             39.28        40.96         39.46       41.16             39.65          41.35         39.83       41.54          40.00              41.75                 40.21
+Isc (A)                         17.16       13.90               17.19             13.95       17.25          14.00       17.31             14.05          17.37         14.10       17.43          14.15              17.49                 14.20
+Panel Efficiency (%)            21.20                           21.40                         21.60                      21.80                            22.00                     22.20                             22.40
+
+BSTC BSTC (Bifacial Standard Test Conditions): Front side irradiation 1000W/ ㎡ , back side reflection irradiation 135W/ ㎡ ,AM=1.5, ambient temperature 25°C.
+Model                           AXIHJT110-555                   AXIHJT110-560                 AXIHJT110-565             AXIHJT110-570                     AXIHJT110-575             AXIHJT110-580                 AXIHJT110-585
+Power Tolerance                     BSTC                                BSTC                          BSTC                     BSTC                             BSTC                        BSTC                               BSTC
+(0~+5W)
+Pmax (W)                             612                                618                            623                       629                            634                         640                                 645
+Vmp (V)                             33.98                              34.17                         34.35                     34.53                            34.71                      34.88                              35.05
+Imp (A)                             18.01                              18.08                         18.14                     18.21                            18.28                      18.34                              18.41
+Voc (V)                             40.49                              40.77                          40.96                    41.16                            41.35                      41.54                              41.75
+Isc (A)                             18.93                              18.96                         19.03                     19.09                            19.16                      19.23                              19.29
+
+Electrical Curves ：
+                                                                                                     700
+
+                                                                                                                             601.2W
+                                                       570.1W                                        600                     570.1W
+                                                                                                                             537.8W
+                                                                                                                             504.5W
+                                                                                                                             470.2W
+                                                     456.3W                                          500
+
+
+                                                                                                     400
+                                                     341.4W
+
+                                                                                                     300
+                                                     225.9W
+
+                                                                                                     200
+
+                                                     110.6W
+                                                                                                     100
+
+
+
+                           10          20       30              40           50                                  10     20            30          40       50
+
+
+
+
+Mechanical Specification
+Solar Cell Type                                                               110 half-cut,N-Type, HJT cells
+
+Module Dimensions (mm)                                                                    2384x1096x35
+                                                                                                                                                                                                   1096
+                                                                                                                                                                                                   1055
+Module Weight (kg)                                                                            32.3
+                                                                                                                                                                                                 Back View
+
+Front Cover                                               Solar glass, 2.0 mm, with anti-reflective surface
+                                                                                                                                                                                     C
+
+Back Cover                                                                          Solar glass, 2.0 mm
+                                                                                                                                                                                     D
+
+Frame                                                                         Anodized aluminum (black)
+
+Junction Box                                         3 bypass diodes, IP68 rated, in accordance with IEC 62790
+
+Cables                          PV cable 4 mm², 0.3m length, in accordance with EN 50618 (or customized length)
+                                                                                                                                                                                     E
+Connectors                          MC4-Evo2, in accordance with IEC 62852, IP68 rated only when connected
+                                                                                                                                                                                                                        400   1400   2384
+Packing                                                               31pcs/pallet, 620pcs/40'HQ container
+
+Properties of System Design                                                                    Temperature Coefficients
+Maximum System Voltage (V)                                            1500                     Temperature Coefficient of Isc                      +0.026%/ °C
+
+Maximum Series Fuse Rating (A)                                          35                     Temperature Coefficient of Voc                      -0.223%/ °C                  A    A
+
+
+Max. Test Load +/- (incl.                                                                      Temperature Coefficient of Pmax                     -0.243%/ °C
+                                                                5400/2400
+Safety Factor of 1.5) (Pa)                                                                                                                                                                                       B
+                                                                                               Nominal Module Operating
+                                                                                                                                                       43±3/ °C                     Unit:mm
+                                                                                                                                                                                                                 B
+Fire Class according to EN 13501-1                    CLASS C (EN13501-1)                      Temperature (NMOT)                                                                   Tolerance:Length: ±2mm Width: ±2mm
+                                                                                                                                                                                                               8-Ø4.3
+Operating Temperature ( °C)                                      -40 to +85
+
+Warranty
+                                                                                                                                                                                    35
+
+                                                                                                                                                                                                           Grounding holes C
+                                                                                                                                                                                                                  9
+Product Warranty (Y)                                            15                                                                                                                          30
+                                                                                                                                                                                          Section A-A
+Power Warranty (Y)                                              30                                                                                                                                                        14
+
+                                                                                                                                                                                                           Mounting holes D
+Power after 1 Year                          ≥98.5% of nominal power
+                                                                                                                                                                                    35                           7
+                                                                                              *The specifications and key features contained in this datasheet
+Annual Degradation (%/Y)                                        0.4                           may deviate slightly from our actual products due to the
+                                                                                              ongoing innovation and product enhancement. AXI Solar                                                                       10
+                                                                                              reserves the right to make necessary adjustment to the                                        30
+Power after 30 years                        ≥89% of nominal power                             information described herein at anytime without further notice.                             Section B-B      Mounting holes E
+

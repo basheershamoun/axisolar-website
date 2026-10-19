@@ -1,5 +1,5 @@
 /* =========================================================================
-   SOLOR — Design Tokens
+   AXI SOLAR — Design Tokens (re-skinned from the Solor theme)
    Single source of truth. Every colour, font and rhythm value in the site
    resolves back to a variable declared here. Re-skin the whole theme by
    editing this file alone.
@@ -11,20 +11,34 @@
   /* ---------------------------------------------------------------------
      BRAND PALETTE — raw values. Prefer the semantic aliases below in code.
      --------------------------------------------------------------------- */
-  --color-forest: #163300;        /* deep green — headings, dark sections   */
-  --color-lime: #89ea5f;          /* signature accent — CTAs, highlights    */
-  --color-mist: #eff1ed;          /* soft off-white — alternating sections  */
-  --color-slate: #888888;         /* body copy                              */
+  /* AXI brand: black + red, sampled from the logo. The old green names are
+     kept so every component re-skins without edits — read "forest" as
+     "brand dark" and "lime" as "brand red". */
+  --color-forest: #15171a;        /* brand near-black — headings, dark sections */
+  --color-lime: #c42633;          /* AXI red — CTAs, highlights. 5.72:1 on white,
+                                     only 3.17:1 on forest: on dark surfaces use
+                                     --color-accent-on-dark for small text.   */
+  --color-red-bright: #ef5560;    /* red that reads as small text on dark: 5.3:1 */
+  --color-mist: #f2f2f3;          /* soft off-white — alternating sections  */
+  --color-slate: #888888;         /* original theme grey — meta/decorative   */
+  --color-prose: #6b6b6b;         /* body copy. Must clear AA on white, mist
+                                     AND parchment — #757575 passed only on
+                                     white (4.05:1 on mist). This is 5.33 /
+                                     4.69 / 5.08.                           */
+  --color-accent-ink: #c42633;    /* red as TEXT on light surfaces: 5.72 on
+                                     white, 5.11 on mist.                   */
   --color-ink: #1d2327;           /* near-black — footer, overlays          */
   --color-charcoal: #23282d;      /* dark UI surfaces                       */
-  --color-citron: #d2e761;        /* secondary accent — chart/graph fills   */
-  --color-parchment: #f8fbef;     /* faintest tint — subtle cards           */
+  --color-citron: #f3b6ba;        /* secondary accent — chart/graph fills   */
+  --color-parchment: #f8f8f9;     /* faintest tint — subtle cards           */
   --color-white: #ffffff;
   --color-black: #000000;
 
   /* Alpha variants (kept verbatim from the original theme) */
   --color-white-12: #ffffff20;    /* hairline borders on dark               */
-  --color-forest-65: #163300a6;   /* image + hero overlays                  */
+  --color-forest-65: #15171acc;   /* image + hero overlays. Raised from a6:
+                                     breadcrumbs dropped to 1.83:1 over the
+                                     lightest parts of the banner photos.   */
 
   /* ---------------------------------------------------------------------
      SEMANTIC ALIASES — what components actually reference.
@@ -32,19 +46,20 @@
   --color-primary: var(--color-forest);
   --color-accent: var(--color-lime);
   --color-secondary: var(--color-mist);
-  --color-text: var(--color-slate);
+  --color-text: var(--color-prose);
   --color-heading: var(--color-forest);
   --color-bg: var(--color-white);
   --color-bg-alt: var(--color-mist);
   --color-bg-dark: var(--color-forest);
-  --color-border: #e5e7e1;
+  --color-border: #e4e4e7;
   --color-border-dark: var(--color-white-12);
   --color-overlay: var(--color-forest-65);
 
   --color-on-primary: var(--color-white);
-  --color-on-accent: var(--color-forest);
+  --color-on-accent: var(--color-white);
+  --color-accent-on-dark: var(--color-red-bright);
   --color-on-dark: var(--color-white);
-  --color-on-dark-muted: rgb(255 255 255 / 0.5);
+  --color-on-dark-muted: rgb(255 255 255 / 0.72);
 
   /* ---------------------------------------------------------------------
      TYPOGRAPHY
@@ -84,12 +99,12 @@
   --radius-md: 0.625rem;          /* 10px                                   */
   --radius-sm: 0.3125rem;         /* 5px                                    */
 
-  --shadow-card: 0 10px 40px rgb(22 51 0 / 0.08);
-  --shadow-lift: 0 20px 50px rgb(22 51 0 / 0.14);
-  --shadow-header: 0 6px 24px rgb(22 51 0 / 0.08);
+  --shadow-card: 0 10px 40px rgb(21 23 26 / 0.08);
+  --shadow-lift: 0 20px 50px rgb(21 23 26 / 0.14);
+  --shadow-header: 0 6px 24px rgb(21 23 26 / 0.08);
 
   /* Dimmer behind the mobile drawer */
-  --color-scrim: rgb(22 51 0 / 0.5);
+  --color-scrim: rgb(21 23 26 / 0.5);
 
   /* ---------------------------------------------------------------------
      MOTION
@@ -130,6 +145,8 @@
     --text-h1: 2.5rem;    /* 40px */
     --text-h2: 2rem;      /* 32px */
     --text-h3: 1.5rem;    /* 24px */
+    --text-h4: 1.25rem;   /* 20px — without this h3 and h4 both land on 24px
+                             and the heading hierarchy collapses in articles */
     --section-py: var(--section-py-sm);
     --header-h: 4.5rem;
   }

@@ -1,8 +1,7 @@
 ---
 /**
- * About page opener — stacked image collage on the left, heading, copy and a
- * two-column benefit checklist on the right. Mirrors the original
- * "About Green Energy Solar" section.
+ * About page opener — stacked image collage beside heading, copy and a
+ * two-column checklist.
  */
 import SectionHeading from '../ui/SectionHeading.astro';
 import Button from '../ui/Button.astro';
@@ -21,25 +20,24 @@ interface Props {
 }
 
 const {
-  eyebrow = 'About Us',
-  title = 'About Green Energy Solar',
+  eyebrow = 'About AXI SOLAR',
+  title = 'Technology and Standards You Can Build On',
   paragraphs = [
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.',
-    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+    'AXI SOLAR is a solar energy manufacturer known for current technology and exacting standards. Every product we ship is built to the highest quality we can deliver.',
+    'Our motivation is a brighter, more environmentally friendly future. We believe solar energy can transform how the world is powered, and we want our products to make a real difference to the planet and to the people who rely on them.',
+    'We supply residential, commercial and industrial projects, helping businesses and households cut their carbon footprint and move to clean, sustainable energy.',
   ],
   points = [
-    'Solar Inverter Setup',
-    'Battery Storage Solutions',
-    'Solar Material Financing',
-    '24 X 7 Call & Chat Support',
-    'Proven Track Record',
-    'Customer-Centric Approach',
+    'N-type bifacial solar panels',
+    '48 V hybrid inverters',
+    'AC & DC EV chargers',
+    'Datasheets for every product',
   ],
-  image = '/images/about-1.jpg',
-  imageAlt = 'Solar array at sunrise on a clear morning',
-  inset = '/images/about-2.jpg',
-  insetAlt = 'Roof-mounted solar panels on a modern house',
-  ctaLabel = 'Get A Free Quote',
+  image = '/images/axi/panel-field.webp',
+  imageAlt = 'Aerial view of ground-mounted solar panel rows',
+  inset = '/images/axi/installer-roof.webp',
+  insetAlt = 'Installer carrying a solar module across a tiled roof',
+  ctaLabel = 'Contact sales',
   ctaHref = '/contact',
 } = Astro.props;
 ---
@@ -53,8 +51,8 @@ const {
         <img
           src={image}
           alt={imageAlt}
-          width="640"
-          height="560"
+          width="1920"
+          height="1079"
           loading="lazy"
           decoding="async"
         />
@@ -64,8 +62,8 @@ const {
         <img
           src={inset}
           alt={insetAlt}
-          width="360"
-          height="280"
+          width="900"
+          height="1200"
           loading="lazy"
           decoding="async"
         />
@@ -111,7 +109,7 @@ const {
   /* ---------- media ---------- */
   .about-intro__media {
     position: relative;
-    padding-bottom: 4.5rem;
+    padding-block-end: 4.5rem;
   }
 
   .about-intro__frame {
@@ -126,8 +124,8 @@ const {
 
   .about-intro__frame--inset {
     width: 58%;
-    margin-top: -4.5rem;
-    margin-left: auto;
+    margin-block-start: -4.5rem;
+    margin-inline-start: auto;
     border: 0.625rem solid var(--color-white);
     box-shadow: var(--shadow-card);
   }
@@ -135,8 +133,8 @@ const {
   /* Dot grid echoing the original's decorative pattern. */
   .about-intro__dots {
     position: absolute;
-    top: -1.25rem;
-    right: -1.25rem;
+    inset-block-start: -1.25rem;
+    inset-inline-end: -1.25rem;
     width: 9rem;
     height: 9rem;
     background-image: radial-gradient(var(--color-accent) 1.5px, transparent 1.6px);
@@ -149,8 +147,8 @@ const {
      decorative, so losing the overhang costs nothing. */
   @media (max-width: 36rem) {
     .about-intro__dots {
-      right: 0;
-      top: -0.75rem;
+      inset-inline-end: 0;
+      inset-block-start: -0.75rem;
       width: 6rem;
       height: 6rem;
     }
@@ -159,13 +157,13 @@ const {
   /* ---------- body ---------- */
   .about-intro__text {
     color: var(--color-text);
-    margin-bottom: 1.25rem;
+    margin-block-end: 1.25rem;
   }
 
   .about-intro__points {
     display: grid;
     gap: 0.875rem 2rem;
-    margin: 1.75rem 0 0;
+    margin-block: 1.75rem 0;
   }
   .about-intro__points li {
     display: flex;
@@ -192,7 +190,7 @@ const {
     height: 0.75rem;
   }
 
-  .about-intro__cta { margin-top: 2.25rem; }
+  .about-intro__cta { margin-block-start: 2.25rem; }
 
   @media (min-width: 576px) {
     .about-intro__points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -200,11 +198,11 @@ const {
 
   @media (min-width: 992px) {
     .about-intro__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .about-intro__media { padding-bottom: 0; }
+    .about-intro__media { padding-block-end: 0; }
     .about-intro__frame--inset {
       position: absolute;
-      right: -2.5rem;
-      bottom: -2.5rem;
+      inset-inline-end: -2.5rem;
+      inset-block-end: -2.5rem;
       width: 55%;
       margin: 0;
     }

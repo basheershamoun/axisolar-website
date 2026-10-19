@@ -1,0 +1,47 @@
+---
+/** EV chargers intro: AXI EVOO sub-brand logo plus a short line overview. */
+---
+
+<section class="section evoo-intro">
+  <div class="container-site evoo-intro__grid">
+    <div class="evoo-intro__logo" data-anim="left">
+      <img
+        src="/images/brand/axi-evoo-logo.webp"
+        alt="AXI EVOO"
+        width="1185"
+        height="168"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="evoo-intro__copy" data-anim="up" data-anim-delay="0.1">
+      <h2>AXI EVOO EV charging</h2>
+      <p>
+        AXI EVOO is the EV charging range from AXI SOLAR: portable and wall-mounted AC chargers from
+        3.5 to 22 kW, and DC fast chargers from 20 to 240 kW. AC units are available with GB/T,
+        Type 2 or Type 1 / NACS connectors; DC units with CCS1, CCS2, CHAdeMO, GB/T or NACS.
+      </p>
+      <p>
+        Every model below links to its full parameter table and datasheet, including supply cable
+        sizing for DC installations.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .evoo-intro__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .evoo-intro__logo img { width: 100%; max-width: 30rem; height: auto; }
+  .evoo-intro__copy h2 { margin-bottom: 1rem; font-size: var(--text-h3); }
+  .evoo-intro__copy p + p { margin-top: 0.75rem; }
+
+  @media (max-width: 991px) {
+    .evoo-intro__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .evoo-intro__logo img { max-width: 20rem; }
+  }
+</style>

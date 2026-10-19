@@ -1,0 +1,98 @@
+---
+/**
+ * Spec table for one product. Columns are variants; a row with a single value
+ * spans every variant column. Scrolls horizontally on narrow screens rather
+ * than squashing numbers.
+ */
+import type { Product } from '../../data/products/types';
+
+interface Props { product: Product }
+const { product } = Astro.props;
+const cols = product.variants.length;
+---
+
+<div class="spec" data-anim="up">
+  <div class="spec__scroll" tabindex="0" role="region" aria-label={`${product.name} specifications`}>
+    <table class="spec__table">
+      <thead>
+        <tr>
+          <th scope="col">Model</th>
+          {product.variants.map((v) => <th scope="col">{v}</th>)}
+        </tr>
+      </thead>
+      {product.specs.map((group) => (
+        <tbody>
+          <tr class="spec__group">
+            <th scope="colgroup" colspan={cols + 1}>{group.title}</th>
+          </tr>
+          {group.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              {row.values.length === 1 && cols > 1
+                ? <td colspan={cols} class="is-span">{row.values[0]}</td>
+                : row.values.map((v) => <td>{v}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      ))}
+    </table>
+  </div>
+</div>
+
+<style>
+  .spec__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+  }
+  .spec__table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: start;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--color-forest);
+    color: var(--color-on-dark);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+  tbody th[scope='row'] {
+    width: 16rem;
+    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+  }
+  td { color: var(--color-text); }
+  td.is-span { text-align: center; }
+  /* Label column stays put while wide tables (7–8 variants) scroll sideways. */
+  thead th:first-child,
+  tbody th[scope='row'] {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+  }
+  tbody th[scope='row'] { background: var(--color-white); }
+  thead th:first-child { z-index: 2; }
+  .spec__group th {
+    background: var(--color-bg-alt);
+    color: var(--color-accent-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  tbody:last-child tr:last-child > * { border-bottom: 0; }
+</style>

@@ -1,0 +1,48 @@
+---
+/**
+ * Featured products — every current product across the three lines.
+ * Renders nothing while the product data is still empty.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import ProductCard from '../products/ProductCard.astro';
+import { allProducts } from '../../data/products';
+import { productHref } from './lines';
+
+const current = allProducts.filter((p) => p.status === 'current');
+---
+
+{
+  current.length > 0 && (
+    <section class="featured section" aria-label="Featured products">
+      <div class="container-site">
+        <SectionHeading
+          eyebrow="Current range"
+          title="Featured Products"
+          text="Open any product for the full specification table and datasheet."
+          align="center"
+          class="featured__head"
+        />
+
+        <ul class="featured__grid">
+          {current.map((product, i) => (
+            <li>
+              <ProductCard product={product} href={productHref(product)} delay={(i % 3) * 0.12} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .featured :global(.featured__head) { margin-block-end: 3.75rem; }
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 1.875rem;
+  }
+  @media (max-width: 767px) {
+    .featured :global(.featured__head) { margin-block-end: 2.5rem; }
+  }
+</style>

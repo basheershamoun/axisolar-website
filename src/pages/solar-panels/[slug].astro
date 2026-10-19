@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductDetail from '../../components/products/ProductDetail.astro';
+import { panels } from '../../data/products/panels';
+import type { Product } from '../../data/products/types';
+
+export function getStaticPaths() {
+  return panels.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+interface Props { product: Product }
+const { product: p } = Astro.props;
+const discontinued = p.status === 'discontinued';
+
+/* e.g. "AXI LUMEN 620–640 W Bifacial Module — AXI SOLAR" */
+const range = p.tagline.match(/^[\d–-]+\s?W/)?.[0] ?? '';
+const title = `${p.name} ${range} Bifacial Module${discontinued ? ' (Discontinued)' : ''} — AXI SOLAR`;
+const description = `${p.name}, ${p.tagline}. ${p.summary}`;
+---
+
+<Base title={title} description={description}>
+  <ProductDetail
+    product={p}
+    crumbs={[
+      { label: 'Solar Panels', href: '/solar-panels' },
+      ...(discontinued ? [{ label: 'Archive', href: '/solar-panels/archive' }] : []),
+    ]}
+  />
+</Base>

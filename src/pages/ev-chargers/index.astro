@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import ChargerIntro from '../../components/chargers/ChargerIntro.astro';
+import ChargerGroup from '../../components/chargers/ChargerGroup.astro';
+import { chargers } from '../../data/products/chargers';
+
+const ac = chargers.filter((p) => p.family === 'AC Charger');
+const dc = chargers.filter((p) => p.family === 'DC Fast Charger');
+---
+
+<Base
+  title="AXI EVOO EV Chargers, AC 3.5–22 kW and DC 20–240 kW — AXI SOLAR"
+  description="AXI EVOO EV chargers: portable and wall-mounted AC chargers from 3.5 to 22 kW and DC fast chargers from 20 to 240 kW with OCPP. Specifications and datasheets."
+>
+  <PageHero title="EV Chargers" crumbs={[{ label: 'EV Chargers' }]} />
+  <ChargerIntro />
+  <ChargerGroup
+    id="ac"
+    eyebrow="AXI EVOO AC"
+    title="AC Chargers"
+    text="Portable and wall-mounted chargers from 3.5 to 22 kW for homes, fleets and destination sites."
+    products={ac}
+    alt
+  />
+  <ChargerGroup
+    id="dc"
+    eyebrow="AXI EVOO DC"
+    title="DC Fast Chargers"
+    text="Wall-mounted and floor-standing DC chargers from 20 to 240 kW, 4G / Ethernet / Wi-Fi and OCPP on DC II and above."
+    products={dc}
+  />
+</Base>

@@ -1,13 +1,13 @@
 ---
-/** Homepage "About us" — image collage beside heading, copy, checklist, CTA. */
+/** Homepage "About AXI SOLAR" — image collage beside heading, copy, checklist, CTA. */
 import SectionHeading from '../ui/SectionHeading.astro';
 import Button from '../ui/Button.astro';
 
 const features = [
-  'Solar Inverter Setup',
-  'Battery Storage Solutions',
-  'Solar Material Financing',
-  '24 X 7 Call & Chat Support',
+  'N-type bifacial modules',
+  '48 V hybrid inverters, 1P & 3P',
+  'AC & DC EV charging',
+  'A datasheet for every product',
 ];
 ---
 
@@ -18,10 +18,10 @@ const features = [
 
       <div class="about__frame about__frame--main reveal-image">
         <img
-          src="/images/about-1.jpg"
-          alt="Rows of solar panels catching the sunrise"
-          width="640"
-          height="620"
+          src="/images/axi/panel-field.webp"
+          alt="Aerial view of ground-mounted solar panel rows"
+          width="1920"
+          height="1079"
           loading="lazy"
           decoding="async"
         />
@@ -29,10 +29,10 @@ const features = [
 
       <div class="about__frame about__frame--sub reveal-image">
         <img
-          src="/images/about-2.jpg"
-          alt="Rooftop solar array on a modern home"
-          width="440"
-          height="380"
+          src="/images/axi/installer-roof.webp"
+          alt="Installer carrying a solar module across a tiled roof"
+          width="900"
+          height="1200"
           loading="lazy"
           decoding="async"
         />
@@ -42,22 +42,20 @@ const features = [
     <div class="about__content">
       <SectionHeading
         eyebrow="About us"
-        title="About Green Energy Solar"
+        title="About AXI SOLAR"
         as="h2"
         class="about__head"
       />
 
       <p class="about__copy" data-anim="up" data-anim-delay="0.1">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled.
+        AXI SOLAR is a solar energy manufacturer committed to high-quality
+        products that harness the power of the sun, creating cleaner, greener
+        solutions for a sustainable planet.
       </p>
       <p class="about__copy" data-anim="up" data-anim-delay="0.2">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-        explicabo.
+        Our range covers the whole system, from the modules on the roof to the
+        inverter on the wall and the charger in the car park, so installers and
+        distributors can source a complete project from one partner.
       </p>
 
       <ul class="about__list" data-anim="up" data-anim-delay="0.3">
@@ -82,7 +80,7 @@ const features = [
       </ul>
 
       <div class="about__cta" data-anim="up" data-anim-delay="0.4">
-        <Button href="/about-us">More About</Button>
+        <Button href="/about">More about us</Button>
       </div>
     </div>
   </div>
@@ -104,14 +102,14 @@ const features = [
   /* ---- collage ---------------------------------------------------------- */
   .about__media {
     position: relative;
-    padding-bottom: 5rem;
-    padding-right: 3.75rem;
+    padding-block-end: 5rem;
+    padding-inline-end: 3.75rem;
   }
 
   .about__dots {
     position: absolute;
-    top: 0;
-    right: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
     width: 9.375rem;
     height: 13.125rem;
     background-image: radial-gradient(
@@ -134,14 +132,14 @@ const features = [
     position: relative;
     width: 88%;
     aspect-ratio: 5 / 5;
-    border-top-left-radius: var(--radius-pill);
-    border-bottom-left-radius: var(--radius-pill);
+    border-start-start-radius: var(--radius-pill);
+    border-end-start-radius: var(--radius-pill);
   }
 
   .about__frame--sub {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
     width: 55%;
     aspect-ratio: 6 / 5;
     border: 0.625rem solid var(--color-bg);
@@ -154,11 +152,11 @@ const features = [
   }
   .about__content :global(.about__head) {
     max-width: none;
-    margin-bottom: 1.5rem;
+    margin-block-end: 1.5rem;
   }
 
   .about__copy {
-    margin-bottom: 1.25rem;
+    margin-block-end: 1.25rem;
     color: var(--color-text);
   }
 
@@ -200,20 +198,20 @@ const features = [
       max-width: none;
     }
     .about__media {
-      padding-right: 2.5rem;
-      padding-bottom: 3.75rem;
+      padding-inline-end: 2.5rem;
+      padding-block-end: 3.75rem;
     }
   }
 
   @media (max-width: 575px) {
     .about__media {
-      padding-right: 1.25rem;
-      padding-bottom: 2.5rem;
+      padding-inline-end: 1.25rem;
+      padding-block-end: 2.5rem;
     }
     .about__frame--main {
       width: 100%;
-      border-top-left-radius: var(--radius-lg);
-      border-bottom-left-radius: var(--radius-lg);
+      border-start-start-radius: var(--radius-lg);
+      border-end-start-radius: var(--radius-lg);
     }
     .about__frame--sub {
       width: 60%;

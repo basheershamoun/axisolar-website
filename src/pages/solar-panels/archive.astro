@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import ProductCard from '../../components/products/ProductCard.astro';
+import Button from '../../components/ui/Button.astro';
+import { panels } from '../../data/products/panels';
+
+const archived = panels.filter((p) => p.status === 'discontinued');
+---
+
+<Base
+  title="Discontinued Solar Panels Archive — AXI SOLAR"
+  description="Specifications and datasheets for discontinued AXI SOLAR modules: AXI-144TSD TOPCon 550–580 W and AXIHJT110 (AXIHJT101) HJT 555–585 W, kept for existing installations."
+>
+  <PageHero
+    title="Panel archive"
+    crumbs={[{ label: 'Solar Panels', href: '/solar-panels' }, { label: 'Archive' }]}
+  />
+
+  <section class="section">
+    <div class="container-site">
+      <div class="archive-notice" role="note" data-anim="up">
+        <p>
+          <strong>Discontinued, kept for reference and existing installations.</strong>
+          These modules are no longer sold. Datasheets and full specifications stay online for
+          system checks, replacements and warranty records.
+        </p>
+        <Button href="/solar-panels" variant="outline">See current modules</Button>
+      </div>
+
+      <h2 class="archive-title" data-anim="up">Discontinued modules</h2>
+      <div class="archive-grid">
+        {archived.map((p, i) => (
+          <ProductCard product={p} href={`/solar-panels/${p.slug}`} delay={i * 0.08} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .archive-notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem;
+    border-inline-start: 4px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+  }
+  .archive-notice p { margin: 0; max-width: 46rem; }
+  .archive-notice strong { display: block; color: var(--color-heading); margin-bottom: 0.25rem; }
+  .archive-title { margin: 3rem 0 2rem; font-size: var(--text-h3); }
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 2rem;
+  }
+</style>

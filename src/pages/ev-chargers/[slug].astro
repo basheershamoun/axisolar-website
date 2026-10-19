@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductDetail from '../../components/products/ProductDetail.astro';
+import { chargers } from '../../data/products/chargers';
+import type { Product } from '../../data/products/types';
+
+export function getStaticPaths() {
+  return chargers.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Product };
+const power = p.highlights[0]?.value ?? '';
+const kind = p.family === 'DC Fast Charger' ? 'Fast Charger' : 'AC Charger';
+---
+
+<Base title={`${p.name} ${power} ${kind} — AXI SOLAR`} description={`${p.name}: ${p.summary}`}>
+  <ProductDetail product={p} crumbs={[{ label: 'EV Chargers', href: '/ev-chargers' }]} />
+</Base>

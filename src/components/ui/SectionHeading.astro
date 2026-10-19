@@ -62,7 +62,12 @@ const {
     background: var(--color-accent);
   }
 
-  .sec-head__title { margin-bottom: 1rem; }
+  /* Without this, five of the section titles drop a single orphan word onto
+     their own line at phone width. Works fine with SplitText's word spans. */
+  .sec-head__title {
+    margin-bottom: 1rem;
+    text-wrap: balance;
+  }
   .sec-head__text { color: var(--color-text); font-size: var(--text-lead); }
 
   .tone-light .sec-head__eyebrow { color: var(--color-accent); }

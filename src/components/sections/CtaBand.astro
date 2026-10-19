@@ -1,0 +1,104 @@
+---
+/**
+ * Full-width CTA band — photo behind a dark scrim, heading, copy, two buttons.
+ * Shared by Home and About (the old site closed every page with one).
+ */
+import SplitText from '../ui/SplitText.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  image?: string;
+}
+
+const {
+  eyebrow = 'Ready to go solar?',
+  title = 'Plan Your Next Project With AXI SOLAR',
+  text = 'Tell us what you are building, whether panels, inverters or charging, and our sales team will come back to you with datasheets and availability.',
+  image = '/images/axi/solar-farm.webp',
+} = Astro.props;
+---
+
+<section class="ctaband" aria-label={title}>
+  <img class="ctaband__bg" src={image} alt="" width="1200" height="1292" loading="lazy" decoding="async" />
+  <span class="ctaband__scrim" aria-hidden="true"></span>
+
+  <div class="container-site ctaband__inner">
+    <span class="ctaband__eyebrow" data-anim="up">{eyebrow}</span>
+    <SplitText text={title} mode="words" as="h2" class="ctaband__title" />
+    <p class="ctaband__text" data-anim="up" data-anim-delay="0.15">{text}</p>
+    <div class="ctaband__actions" data-anim="up" data-anim-delay="0.3">
+      <Button href="/contact" size="lg">Contact sales</Button>
+      <Button href="/downloads" size="lg" class="ctaband__ghost">Download datasheets</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ctaband {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--color-bg-dark);
+  }
+  .ctaband__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ctaband__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-overlay);
+  }
+
+  .ctaband__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: var(--section-py);
+    text-align: center;
+  }
+
+  .ctaband__eyebrow {
+    margin-block-end: 0.75rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-on-dark);
+  }
+  .ctaband :global(.ctaband__title) {
+    max-width: 22ch;
+    margin-block-end: 1rem;
+    color: var(--color-on-dark);
+    text-wrap: balance;
+  }
+  .ctaband__text {
+    max-width: 40rem;
+    margin-block-end: 2.25rem;
+    color: var(--color-on-dark-muted);
+    font-size: var(--text-lead);
+  }
+
+  .ctaband__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .ctaband__actions :global(.ctaband__ghost) {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-on-dark);
+    --btn-border: var(--color-on-dark);
+    --btn-bg-hover: var(--color-on-dark);
+    --btn-fg-hover: var(--color-heading);
+    --btn-border-hover: var(--color-on-dark);
+  }
+</style>

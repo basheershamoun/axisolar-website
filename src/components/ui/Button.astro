@@ -1,5 +1,5 @@
 ---
-/** Pill button matching the theme: lime fill, forest text, arrow on hover. */
+/** Pill button matching the theme: brand red fill, white text, arrow on hover. */
 interface Props {
   href?: string;
   variant?: 'primary' | 'outline' | 'dark' | 'light';
@@ -38,7 +38,7 @@ const Tag = href ? 'a' : 'button';
 <style>
   .btn {
     --btn-bg: var(--color-accent);
-    --btn-fg: var(--color-forest);
+    --btn-fg: var(--color-on-accent);
     --btn-border: var(--color-accent);
     --btn-bg-hover: var(--color-forest);
     --btn-fg-hover: var(--color-white);
@@ -105,7 +105,7 @@ const Tag = href ? 'a' : 'button';
     --btn-fg: var(--color-forest);
     --btn-border: var(--color-forest);
     --btn-bg-hover: var(--color-accent);
-    --btn-fg-hover: var(--color-forest);
+    --btn-fg-hover: var(--color-on-accent);
     --btn-border-hover: var(--color-accent);
   }
 
@@ -114,7 +114,7 @@ const Tag = href ? 'a' : 'button';
     --btn-fg: var(--color-white);
     --btn-border: var(--color-forest);
     --btn-bg-hover: var(--color-accent);
-    --btn-fg-hover: var(--color-forest);
+    --btn-fg-hover: var(--color-on-accent);
     --btn-border-hover: var(--color-accent);
   }
 
@@ -123,7 +123,7 @@ const Tag = href ? 'a' : 'button';
     --btn-fg: var(--color-forest);
     --btn-border: var(--color-white);
     --btn-bg-hover: var(--color-accent);
-    --btn-fg-hover: var(--color-forest);
+    --btn-fg-hover: var(--color-on-accent);
     --btn-border-hover: var(--color-accent);
   }
 

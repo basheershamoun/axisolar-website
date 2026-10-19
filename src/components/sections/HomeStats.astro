@@ -1,34 +1,34 @@
 ---
 /**
- * Counter band — the forest-green strip that sits under "Why choose us".
+ * Headline product figures — the dark strip under "Why choose us".
+ * Real maximums from the datasheets, not marketing counts.
  *
  * The counter helper writes into `textContent` of its own element, so the
- * "+" lives in a sibling <span>. Putting it inside the counter would get
- * overwritten on the first frame.
+ * unit lives in a sibling <span>.
  */
 interface Stat {
   value: number;
-  suffix: string;
+  unit: string;
   label: string;
-  icon: 'project' | 'clients' | 'award' | 'rating';
+  icon: 'panel' | 'inverter' | 'ac' | 'dc';
 }
 
 const stats: Stat[] = [
-  { value: 1000, suffix: '+', label: 'Project Done',   icon: 'project' },
-  { value: 1200, suffix: '+', label: 'Happy Clients',  icon: 'clients' },
-  { value: 850,  suffix: '+', label: 'Award Winning',  icon: 'award' },
-  { value: 1100, suffix: '+', label: 'Rating Customer', icon: 'rating' },
+  { value: 640, unit: 'W',  label: 'Max module power',     icon: 'panel' },
+  { value: 20,  unit: 'kW', label: 'Max hybrid inverter',  icon: 'inverter' },
+  { value: 22,  unit: 'kW', label: 'Max AC charging',      icon: 'ac' },
+  { value: 240, unit: 'kW', label: 'Max DC fast charging', icon: 'dc' },
 ];
 
 const paths: Record<Stat['icon'], string> = {
-  project: 'M3 20h18M6 20V9l6-4 6 4v11M10 20v-5h4v5',
-  clients: 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0',
-  award: 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM8.5 14 7 22l5-2.5L17 22l-1.5-8',
-  rating: 'M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9L12 3.5Z',
+  panel: 'M3 4h18v12H3zM3 8h18M3 12h18M9 4v12M15 4v12M12 16v4M8 20h8',
+  inverter: 'M7 2.5h10a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-15a2 2 0 0 1 2-2ZM9 7h6M12.5 10.5 10.5 14h3l-2 3.5',
+  ac: 'M7 3h10v18H7zM10 7h4M4 12c1-1.5 2-1.5 3 0M17 12c1 1.5 2 1.5 3 0',
+  dc: 'M13 2 4 14h7l-1 8 9-12h-7l1-8Z',
 };
 ---
 
-<section class="stats" aria-label="Solor by the numbers">
+<section class="stats" aria-label="AXI SOLAR range in figures">
   <div class="container-site">
     <ul class="stats__list">
       {
@@ -44,7 +44,7 @@ const paths: Record<Stat['icon'], string> = {
               <span class="stat__value">
                 {/* Counter target — its textContent is replaced each frame. */}
                 <span class="stat__number" data-count-to={String(stat.value)}>{stat.value}</span>
-                <span class="stat__suffix">{stat.suffix}</span>
+                <span class="stat__suffix">&nbsp;{stat.unit}</span>
               </span>
               <span class="stat__label">{stat.label}</span>
             </span>
@@ -100,7 +100,7 @@ const paths: Record<Stat['icon'], string> = {
     line-height: 1.15;
     color: var(--color-on-dark);
   }
-  .stat__suffix { color: var(--color-accent); }
+  .stat__suffix { color: var(--color-accent-on-dark); }
 
   .stat__label {
     font-size: var(--text-base);
@@ -115,7 +115,8 @@ const paths: Record<Stat['icon'], string> = {
 
   @media (max-width: 575px) {
     .stats { padding-block: 2.5rem; }
-    .stats__list { grid-template-columns: minmax(0, 1fr); }
+    /* One per row left ~200px of every row empty; 2-up reads as a band. */
+    .stats__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 0.75rem; }
     .stat__icon { width: 3rem; height: 3rem; }
     .stat__icon svg { width: 1.375rem; height: 1.375rem; }
   }

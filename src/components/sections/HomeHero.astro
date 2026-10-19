@@ -1,7 +1,6 @@
 ---
 /**
- * Homepage hero — full-bleed photo, forest overlay, transparent header on top.
- * Copy matches the original Solor demo verbatim.
+ * Homepage hero — full-bleed photo, dark overlay, transparent header on top.
  */
 import SplitText from '../ui/SplitText.astro';
 import Button from '../ui/Button.astro';
@@ -10,10 +9,10 @@ import Button from '../ui/Button.astro';
 <section class="hero">
   <div class="hero__bg">
     <img
-      src="/images/hero.jpg"
-      alt=""
-      width="1920"
-      height="1080"
+      src="/images/axi/manufacturing.webp"
+      alt="Technicians inspecting solar cells on a module production line"
+      width="1200"
+      height="800"
       loading="eager"
       fetchpriority="high"
       decoding="async"
@@ -26,12 +25,12 @@ import Button from '../ui/Button.astro';
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M13.2 2 4.6 13.2h5.6L9 22l9.4-11.9h-6z" />
       </svg>
-      <span>Welcome to Solor</span>
+      <span>For installers, distributors &amp; engineers</span>
     </p>
 
     <div class="hero__title">
       <SplitText
-        text="Powering the Future With Renewable."
+        text="Panels, Inverters and EV Charging From One Partner."
         mode="chars"
         as="h1"
         class="hero__h1"
@@ -39,14 +38,14 @@ import Button from '../ui/Button.astro';
     </div>
 
     <p class="hero__text" data-anim="up" data-anim-delay="0.2">
-      Duis ultricies, tortor a accumsan fermentum, purus diam mollis velit, eu
-      bibendum ipsum erat quis leo. Vestibulum finibus, leo dapibus feugiat
-      rutrum, augue lacus rhoncus velit, vel scelerisque odio est.
+      N-type bifacial modules up to 640 W, 48 V hybrid inverters from 3 to 20 kW
+      and EV chargers up to 240 kW, each with a full datasheet ready for your
+      next project.
     </p>
 
     <div class="hero__actions" data-anim="up" data-anim-delay="0.35">
-      <Button href="/services" size="lg">Our Services</Button>
-      <Button href="/contact" size="lg" class="hero__ghost">Contact Now</Button>
+      <Button href="#product-lines" size="lg">Explore products</Button>
+      <Button href="/contact" size="lg" class="hero__ghost">Contact sales</Button>
     </div>
   </div>
 </section>
@@ -94,7 +93,7 @@ import Button from '../ui/Button.astro';
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    margin-block-end: 1.25rem;
     font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
@@ -110,7 +109,7 @@ import Button from '../ui/Button.astro';
 
   .hero__title {
     max-width: 50rem;
-    margin-bottom: 1.5rem;
+    margin-block-end: 1.5rem;
   }
   .hero__title :global(.hero__h1) {
     margin: 0;
@@ -119,14 +118,14 @@ import Button from '../ui/Button.astro';
     line-height: var(--leading-display);
     text-wrap: balance;
   }
-  /* "Renewable." — the closing word carries the accent, as in the original. */
+  /* "Partner." — the closing word carries the accent, as in the original. */
   .hero__title :global(.split-word-group:last-child) {
     color: var(--color-accent);
   }
 
   .hero__text {
     max-width: 36.25rem;
-    margin-bottom: 2.5rem;
+    margin-block-end: 2.5rem;
     color: var(--color-on-dark);
     font-size: var(--text-lead);
     line-height: var(--leading-body);
@@ -158,10 +157,10 @@ import Button from '../ui/Button.astro';
   @media (max-width: 575px) {
     .hero {
       padding-block: calc(var(--header-h) + 2.5rem) 3.75rem;
-      text-align: left;
+      text-align: start;
     }
     .hero__text {
-      margin-bottom: 2rem;
+      margin-block-end: 2rem;
       font-size: var(--text-base);
     }
     .hero__actions {

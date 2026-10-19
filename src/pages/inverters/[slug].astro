@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductDetail from '../../components/products/ProductDetail.astro';
+import { inverters } from '../../data/products/inverters';
+import type { Product } from '../../data/products/types';
+
+export function getStaticPaths() {
+  return inverters.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Product };
+const power = p.highlights.find((h) => h.label === 'Rated power')?.value ?? '';
+const phase = p.family?.startsWith('Three') ? 'Three-Phase' : 'Single-Phase';
+---
+
+<Base title={`${p.name} ${power} ${phase} Hybrid Inverter — AXI SOLAR`} description={p.summary}>
+  <ProductDetail product={p} crumbs={[{ label: 'Inverters', href: '/inverters' }]} />
+</Base>

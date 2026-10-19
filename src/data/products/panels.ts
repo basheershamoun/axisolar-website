@@ -1,0 +1,381 @@
+import type { Product, SpecRow } from './types';
+
+/** Filled from datasheets — see recon/axisolar/datasheets/panels.md. */
+
+const row = (label: string, ...values: string[]): SpecRow => ({ label, values });
+
+const lumen: Product = {
+  slug: 'lumen',
+  line: 'panels',
+  name: 'AXI LUMEN',
+  tagline: '620–640 W N-type bifacial double-glass module',
+  summary:
+    '132 half-cell N-type TOPCon module with 2.0 + 2.0 mm glass, 80 ± 5 % bifaciality and up to 23.7 % front-side efficiency, rated for 1500 V systems.',
+  status: 'current',
+  image: '/images/products/panels/lumen.webp',
+  imageAlt: 'Three AXI LUMEN black-framed N-type bifacial solar modules, front view',
+  variants: ['AX620TC-MHC-D', 'AX625TC-MHC-D', 'AX630TC-MHC-D', 'AX635TC-MHC-D', 'AX640TC-MHC-D'],
+  highlights: [
+    { label: 'Max power', value: '640 W' },
+    { label: 'Efficiency', value: '23.7 %' },
+    { label: 'Bifaciality', value: '80 ± 5 %' },
+    { label: 'Warranty', value: '15 / 30 yr' },
+  ],
+  features: [
+    'N-type cells with very low light-induced degradation (LID)',
+    'SMBB half-cell layout: more uniform current collection and lower internal resistive loss',
+    'Bifacial double glass: 80 ± 5 % bifaciality, rear-side gain depends on mounting height, tilt and ground albedo',
+    'Improved performance in low-light conditions',
+    'Third-party tested for salt-spray and ammonia corrosion',
+    'Front load 5400 Pa, rear load 2400 Pa, 25 mm hail at 23 m/s',
+  ],
+  specs: [
+    {
+      title: 'Electrical (STC)',
+      rows: [
+        row('Maximum power Pmax (W)', '620', '625', '630', '635', '640'),
+        row('Open-circuit voltage Voc (V)', '49.40', '49.63', '49.87', '50.11', '50.35'),
+        row('Short-circuit current Isc (A)', '15.95', '16.00', '16.05', '16.10', '16.15'),
+        row('Voltage at Pmax Vmp (V)', '41.05', '41.25', '41.45', '41.65', '41.84'),
+        row('Current at Pmax Imp (A)', '15.10', '15.15', '15.20', '15.25', '15.29'),
+        row('Module efficiency (%)', '22.9', '23.1', '23.3', '23.5', '23.7'),
+        row('Power output tolerance', '0 to +3 %'),
+        row('Test conditions', '1000 W/m², AM 1.5, cell temperature 25 °C'),
+      ],
+    },
+    {
+      title: 'Electrical (NMOT)',
+      rows: [
+        row('Maximum power Pmax (W)', '484', '488', '491', '495', '499'),
+        row('Open-circuit voltage Voc (V)', '49.05', '49.29', '49.52', '49.76', '50.00'),
+        row('Short-circuit current Isc (A)', '12.44', '12.48', '12.52', '12.56', '12.60'),
+        row('Voltage at Pmax Vmp (V)', '41.50', '41.70', '41.90', '42.10', '42.30'),
+        row('Current at Pmax Imp (A)', '11.65', '11.69', '11.73', '11.76', '11.80'),
+        row('Test conditions', '800 W/m², AM 1.5, ambient 20 °C, wind 1 m/s'),
+      ],
+    },
+    {
+      title: 'Electrical (bifacial, 10 % rear gain)',
+      rows: [
+        row('Maximum power Pmax (W)', '682', '688', '693', '699', '704'),
+        row('Open-circuit voltage Voc (V)', '49.40', '49.63', '49.87', '50.11', '50.35'),
+        row('Short-circuit current Isc (A)', '17.55', '17.60', '17.66', '17.71', '17.77'),
+        row('Voltage at Pmax Vmp (V)', '41.05', '41.25', '41.45', '41.65', '41.84'),
+        row('Current at Pmax Imp (A)', '16.61', '16.67', '16.72', '16.77', '16.82'),
+        row('Bifaciality', '80 ± 5 %'),
+      ],
+    },
+    {
+      title: 'Mechanical',
+      rows: [
+        row('Cell type', 'N-type monocrystalline, SMBB half-cell'),
+        row('Number of cells', '132 half-cells (6 × 22)'),
+        row('Dimensions (L × W × H)', '2382 × 1134 × 30 mm (tolerance ±2 mm)'),
+        row('Weight', '33.7 kg'),
+        row('Glass', '2.0 + 2.0 mm AR-coated heat-strengthened glass'),
+        row('Frame', 'Anodised aluminium alloy'),
+        row('Junction box', 'IP68, 3 bypass diodes'),
+        row('Output cable', '4 mm², 300 mm (length can be customised)'),
+        row('Connector', 'MC4 compatible'),
+        row('Mounting-hole spacing', '400 / 1400 mm'),
+      ],
+    },
+    {
+      title: 'Mechanical loading',
+      rows: [
+        row('Front-side max. static load', '5400 Pa'),
+        row('Rear-side max. static load', '2400 Pa'),
+        row('Hail test', '25 mm hailstone at 23 m/s'),
+      ],
+    },
+    {
+      title: 'Operating parameters',
+      rows: [
+        row('Operating temperature', '−40 to +85 °C'),
+        row('Maximum system voltage', '1500 V DC'),
+        row('Maximum series fuse rating', '30 A'),
+        row('Protection class', 'Class II'),
+        row('Fire rating', 'Class A (IEC)'),
+      ],
+    },
+    {
+      title: 'Temperature ratings',
+      rows: [
+        row('Temperature coefficient of Pmax', '−0.28 %/°C'),
+        row('Temperature coefficient of Voc', '−0.23 %/°C'),
+        row('Temperature coefficient of Isc', '+0.04 %/°C'),
+        row('Nominal operating cell temperature', '45 ± 2 °C'),
+      ],
+    },
+    {
+      title: 'Warranty & packing',
+      rows: [
+        row('Product warranty', '15 years'),
+        row('Linear power output warranty', '30 years'),
+        row('Packing', '36 pcs per pallet, 720 pcs per 40′ HC'),
+      ],
+    },
+  ],
+  datasheet: '/datasheets/axi-lumen.pdf',
+  toConfirm: [
+    'Cell technology: "TC" in the model code read as TOPCon; the sheet never says TOPCon. Cell size not stated.',
+    'NMOT Vmp (41.50–42.30 V) is higher than STC Vmp, and NMOT Voc only ~0.35 V below STC. Physically implausible; shown as printed (Vmp × Imp matches NMOT Pmax). Ask for the source sheet.',
+    'Output cable "±300mm" corrected to 300 mm.',
+    'Bifacial table only says "10% solar irradiation ratio"; no rear irradiance stated (TSD/HJT use 135 W/m²).',
+    'No degradation figures (1st year, annual, 30-year) on the sheet.',
+    'Frame colour not stated in the table; product photo shows black.',
+    'Certifications listed on the sheet (UL 61730, IEC 61215:2021, IEC 61730:2023, IEC 62941, ISO 9001/14001/45001) not shown: need certificate numbers / holder before publishing.',
+    'Typos fixed in copy: "corrosiontest", "subiect".',
+  ],
+};
+
+const tsd: Product = {
+  slug: 'axi-144tsd',
+  line: 'panels',
+  name: 'AXI-144TSD',
+  tagline: '550–580 W N-type TOPCon bifacial module',
+  summary:
+    '144 half-cut 182 × 91 mm N-type TOPCon cells, 16BB SMBB, 2.0 mm double glass and up to 22.45 % efficiency. Discontinued; specifications kept for existing installations.',
+  status: 'discontinued',
+  image: '/images/products/panels/axi-144tsd.webp',
+  imageAlt: 'AXI-144TSD silver-framed bifacial solar module, front and rear view',
+  variants: [
+    'AXI550-36V-TSD',
+    'AXI555-36V-TSD',
+    'AXI560-36V-TSD',
+    'AXI565-36V-TSD',
+    'AXI570-36V-TSD',
+    'AXI575-36V-TSD',
+    'AXI580-36V-TSD',
+  ],
+  highlights: [
+    { label: 'Max power', value: '580 W' },
+    { label: 'Efficiency', value: '22.45 %' },
+    { label: 'Cell', value: '182 × 91 mm' },
+    { label: 'Warranty', value: '15 / 30 yr' },
+  ],
+  features: [
+    'N-type TOPCon half-cut cells, 16BB SMBB for better light trapping and current collection',
+    'Anti-PID performance through process and materials control',
+    'Bifacial: up to 643 W with 135 W/m² rear irradiance',
+    'IP68 junction box, Class II, 1500 V maximum system voltage',
+    'Anodised aluminium frame, silver or black',
+    'Snow load 5400 Pa, wind load 2400 Pa',
+  ],
+  specs: [
+    {
+      title: 'Electrical (STC)',
+      rows: [
+        row('Maximum power Pmax (W)', '550', '555', '560', '565', '570', '575', '580'),
+        row('Voltage at Pmax Vmp (V)', '41.50', '41.64', '41.77', '41.92', '42.07', '42.22', '42.37'),
+        row('Current at Pmax Imp (A)', '13.26', '13.33', '13.41', '13.48', '13.55', '13.62', '13.69'),
+        row('Open-circuit voltage Voc (V)', '50.21', '50.34', '50.47', '50.60', '50.74', '50.88', '51.02'),
+        row('Short-circuit current Isc (A)', '14.00', '14.07', '14.15', '14.23', '14.31', '14.39', '14.47'),
+        row('Module efficiency (%)', '21.29', '21.48', '21.68', '21.87', '22.07', '22.26', '22.45'),
+        row('Power tolerance', '0 to +3 W'),
+        row('Voc / Isc tolerance', '±3 %'),
+        row('Test conditions', '1000 W/m², AM 1.5, cell temperature 25 °C'),
+      ],
+    },
+    {
+      title: 'Electrical (NMOT)',
+      rows: [
+        row('Maximum power Pmax (W)', '413', '417', '421', '425', '429', '433', '437'),
+        row('Voltage at Pmax Vmp (V)', '38.99', '39.12', '39.25', '39.38', '39.51', '39.64', '39.77'),
+        row('Current at Pmax Imp (A)', '10.61', '10.67', '10.73', '10.79', '10.85', '10.91', '10.97'),
+        row('Open-circuit voltage Voc (V)', '47.70', '47.82', '47.94', '48.06', '48.20', '48.32', '48.46'),
+        row('Short-circuit current Isc (A)', '11.30', '11.36', '11.42', '11.49', '11.55', '11.61', '11.68'),
+        row('Test conditions', '800 W/m², AM 1.5, ambient 20 °C, wind 1 m/s'),
+      ],
+    },
+    {
+      title: 'Electrical (bifacial, BNPI)',
+      rows: [
+        row('Maximum power Pmax (W)', '609', '615', '620', '626', '632', '637', '643'),
+        row('Voltage at Pmax Vmp (V)', '41.50', '41.64', '41.77', '41.92', '42.07', '42.22', '42.37'),
+        row('Current at Pmax Imp (A)', '14.69', '14.77', '14.86', '14.94', '15.01', '15.09', '15.18'),
+        row('Open-circuit voltage Voc (V)', '50.21', '50.34', '50.47', '50.60', '50.74', '50.88', '51.02'),
+        row('Short-circuit current Isc (A)', '15.51', '15.59', '15.68', '15.77', '15.86', '15.94', '16.03'),
+        row('Test conditions', 'Rear irradiance 135 W/m², AM 1.5, 25 °C'),
+      ],
+    },
+    {
+      title: 'Mechanical',
+      rows: [
+        row('Cell type', 'N-type mono TOPCon, 182 × 91 mm half-cut, 16BB SMBB'),
+        row('Number of cells', '144 (6 × 24)'),
+        row('Dimensions (L × W × H)', '2278 × 1134 × 30 mm'),
+        row('Weight', '32.2 kg'),
+        row('Front glass', '2.0 mm AR-coated tempered glass'),
+        row('Rear glass', '2.0 mm glazed glass'),
+        row('Frame', 'Anodised aluminium alloy, silver or black'),
+        row('Junction box', 'IP68, 3 diodes'),
+        row('Output cable', '4 mm², 350 mm, MC4 connector'),
+        row('Max. wind / snow load', '2400 Pa / 5400 Pa'),
+      ],
+    },
+    {
+      title: 'Temperature & ratings',
+      rows: [
+        row('Temperature coefficient of Pmax', '−0.300 %/°C'),
+        row('Temperature coefficient of Voc', '−0.250 %/°C'),
+        row('Temperature coefficient of Isc', '+0.046 %/°C'),
+        row('NMOT', '45 ± 2 °C'),
+        row('Operating and storage temperature', '−40 to +85 °C'),
+        row('Maximum system voltage', '1500 V DC'),
+        row('Maximum series fuse rating', '30 A'),
+        row('Protection class', 'Class II'),
+      ],
+    },
+    {
+      title: 'Warranty & packing',
+      rows: [
+        row('Product warranty (materials and workmanship)', '15 years'),
+        row('Linear power output warranty', '30 years'),
+        row('Power after 30 years', '87.4 % of nominal'),
+        row('Packing', '37 pcs per package; 185 pcs per 20′ container, 740 pcs per 40′ HQ'),
+      ],
+    },
+  ],
+  datasheet: '/datasheets/axi-144tsd.pdf',
+  toConfirm: [
+    'Temperature-coefficient units printed as W/℃, V/℃, A/℃; values are %/°C, corrected.',
+    'Cell count printed "144 (12*12)"; shown as 6 × 24, the usual layout for 144 half-cut cells.',
+    'Voc/Isc printed with "±3%" on each value; moved to a single tolerance row.',
+    'Bifacial (BNPI) Vmp and Voc are identical to STC, likely copied rows. No bifaciality factor stated.',
+    '87.4 % after 30 years read from the warranty chart only; no first-year or annual degradation figure.',
+    '37 pcs per package derived from 185 / 5 and 740 / 20.',
+    'Frame colour stocked (silver vs black) unknown; photo shows silver.',
+    '"Module power increases 5–25%" marketing claim dropped (unsupported). Certifications (IEC 61215/61730) not shown.',
+    'Typos fixed: "materail", "Operatingand And Storage", "MaxWind".',
+  ],
+};
+
+const hjt: Product = {
+  slug: 'axi-hjt',
+  line: 'panels',
+  name: 'AXIHJT110',
+  tagline: '555–585 W N-type HJT bifacial module',
+  summary:
+    '110 half-cut heterojunction cells on 210 mm wafers, 2.0 mm double glass and up to 22.40 % efficiency. Listed as AXIHJT101 on earlier datasheets. Discontinued; specifications kept for existing installations.',
+  status: 'discontinued',
+  image: '/images/products/panels/axi-hjt.webp',
+  imageAlt: 'AXIHJT110 bifacial heterojunction solar module, front and rear view',
+  variants: [
+    'AXIHJT110-555',
+    'AXIHJT110-560',
+    'AXIHJT110-565',
+    'AXIHJT110-570',
+    'AXIHJT110-575',
+    'AXIHJT110-580',
+    'AXIHJT110-585',
+  ],
+  highlights: [
+    { label: 'Max power', value: '585 W' },
+    { label: 'Efficiency', value: '22.40 %' },
+    { label: 'Pmax coeff.', value: '−0.243 %/°C' },
+    { label: 'Warranty', value: '15 / 30 yr' },
+  ],
+  features: [
+    'N-type bifacial HJT half-cut cells on 210 mm wafers',
+    'Super MBB half-cut cells to limit micro-crack impact, no cutting loss',
+    'No BO-LID; anti-LeTID and anti-PID performance',
+    'Low Pmax temperature coefficient: −0.243 %/°C',
+    '≥ 98.5 % power after year 1, 0.4 %/yr, ≥ 89 % after 30 years',
+    'Test load 5400 Pa / 2400 Pa (safety factor 1.5)',
+  ],
+  specs: [
+    {
+      title: 'Electrical (STC)',
+      rows: [
+        row('Maximum power Pmax (W)', '555', '560', '565', '570', '575', '580', '585'),
+        row('Voltage at Pmax Vmp (V)', '33.98', '34.17', '34.35', '34.53', '34.71', '34.88', '35.05'),
+        row('Current at Pmax Imp (A)', '16.33', '16.39', '16.45', '16.51', '16.57', '16.63', '16.69'),
+        row('Open-circuit voltage Voc (V)', '40.49', '40.77', '40.96', '41.16', '41.35', '41.54', '41.75'),
+        row('Short-circuit current Isc (A)', '17.16', '17.19', '17.25', '17.31', '17.37', '17.43', '17.49'),
+        row('Module efficiency (%)', '21.20', '21.40', '21.60', '21.80', '22.00', '22.20', '22.40'),
+        row('Power tolerance', '0 to +5 W'),
+        row('Test conditions', '1000 W/m², AM 1.5, cell temperature 25 °C'),
+      ],
+    },
+    {
+      title: 'Electrical (NMOT)',
+      rows: [
+        row('Maximum power Pmax (W)', '429', '433', '437', '441', '445', '449', '453'),
+        row('Voltage at Pmax Vmp (V)', '32.33', '32.54', '32.71', '32.89', '33.09', '33.26', '33.45'),
+        row('Current at Pmax Imp (A)', '13.27', '13.31', '13.36', '13.41', '13.45', '13.50', '13.54'),
+        row('Open-circuit voltage Voc (V)', '38.99', '39.28', '39.46', '39.65', '39.83', '40.00', '40.21'),
+        row('Short-circuit current Isc (A)', '13.90', '13.95', '14.00', '14.05', '14.10', '14.15', '14.20'),
+        row('Test conditions', '800 W/m², AM 1.5, ambient 20 °C, wind 1 m/s'),
+      ],
+    },
+    {
+      title: 'Electrical (bifacial, BSTC)',
+      rows: [
+        row('Maximum power Pmax (W)', '612', '618', '623', '629', '634', '640', '645'),
+        row('Voltage at Pmax Vmp (V)', '33.98', '34.17', '34.35', '34.53', '34.71', '34.88', '35.05'),
+        row('Current at Pmax Imp (A)', '18.01', '18.08', '18.14', '18.21', '18.28', '18.34', '18.41'),
+        row('Open-circuit voltage Voc (V)', '40.49', '40.77', '40.96', '41.16', '41.35', '41.54', '41.75'),
+        row('Short-circuit current Isc (A)', '18.93', '18.96', '19.03', '19.09', '19.16', '19.23', '19.29'),
+        row('Test conditions', 'Front 1000 W/m², rear 135 W/m², AM 1.5, ambient 25 °C'),
+      ],
+    },
+    {
+      title: 'Mechanical',
+      rows: [
+        row('Cell type', '110 half-cut N-type HJT cells, 210 mm wafer, super MBB'),
+        row('Dimensions (L × W × H)', '2384 × 1096 × 35 mm (tolerance ±2 mm)'),
+        row('Weight', '32.3 kg'),
+        row('Front cover', '2.0 mm solar glass, anti-reflective surface'),
+        row('Back cover', '2.0 mm solar glass'),
+        row('Frame', 'Anodised aluminium'),
+        row('Junction box', '3 bypass diodes, IP68, to IEC 62790'),
+        row('Cables', '4 mm² PV cable, 300 mm (or custom length), to EN 50618'),
+        row('Connectors', 'MC4-Evo2, to IEC 62852, IP68 when mated'),
+        row('Mounting-hole spacing', '400 / 1400 mm'),
+        row('Grounding holes', '8 × Ø4.3 mm'),
+      ],
+    },
+    {
+      title: 'System design',
+      rows: [
+        row('Maximum system voltage', '1500 V DC'),
+        row('Maximum series fuse rating', '35 A'),
+        row('Max. test load +/− (safety factor 1.5)', '5400 / 2400 Pa'),
+        row('Fire class', 'Class C (EN 13501-1)'),
+        row('Operating temperature', '−40 to +85 °C'),
+      ],
+    },
+    {
+      title: 'Temperature coefficients',
+      rows: [
+        row('Temperature coefficient of Pmax', '−0.243 %/°C'),
+        row('Temperature coefficient of Voc', '−0.223 %/°C'),
+        row('Temperature coefficient of Isc', '+0.026 %/°C'),
+        row('NMOT', '43 ± 3 °C'),
+      ],
+    },
+    {
+      title: 'Warranty & packing',
+      rows: [
+        row('Product warranty', '15 years'),
+        row('Power warranty', '30 years'),
+        row('Power after 1 year', '≥ 98.5 % of nominal'),
+        row('Annual degradation', '0.4 %/yr'),
+        row('Power after 30 years', '≥ 89 % of nominal'),
+        row('Packing', '31 pcs per pallet, 620 pcs per 40′ HQ'),
+      ],
+    },
+  ],
+  datasheet: '/datasheets/axi-hjt.pdf',
+  toConfirm: [
+    'Name: datasheet title and old site say "AXIHJT101", spec table says "AXIHJT110-xxx". Used 110 (matches the 110-cell count); summary mentions 101 so existing owners can find it.',
+    'Frame listed as black but the product photo shows silver; colour omitted.',
+    'Efficiency rounding: 555 W / (2.384 × 1.096 m²) = 21.24 % vs 21.20 % printed; kept as printed.',
+    'Dropped unsupported claim "front generation power 30% higher than conventional, back 25% higher" and "Size > 2 sqm".',
+    'No certification standards listed in text; bifaciality factor not stated.',
+    'Format fixes: "43±3/ °C", "temperature20 °C".',
+  ],
+};
+
+export const panels: Product[] = [lumen, tsd, hjt];

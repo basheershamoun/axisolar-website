@@ -1,0 +1,87 @@
+---
+/** Family-level comparison of VERO, NERO and FORZA. Scrolls sideways on phones. */
+import { inverters, inverterComparison } from '../../data/products/inverters';
+import SectionHeading from '../ui/SectionHeading.astro';
+---
+
+<section class="section cmp">
+  <div class="container-site">
+    <SectionHeading
+      eyebrow="Compare"
+      title="Hybrid inverter range at a glance"
+      text="Key figures per family. Full per-model specifications are on each product page and in the datasheets."
+    />
+    <div class="cmp__scroll" tabindex="0" role="region" aria-label="Hybrid inverter comparison" data-anim="up">
+      <table class="cmp__table">
+        <caption class="sr-only">Comparison of AXI VERO, AXI NERO and AXI FORZA hybrid inverters</caption>
+        <thead>
+          <tr>
+            <th scope="col">Specification</th>
+            {inverters.map((p) => (
+              <th scope="col"><a href={`/inverters/${p.slug}`}>{p.name}</a></th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {inverterComparison.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              {row.values.map((v) => <td>{v}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cmp { background: var(--color-bg-alt); }
+  .cmp__scroll {
+    margin-top: 2.5rem;
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+  }
+  .cmp__scroll:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .cmp__table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: var(--text-base);
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    padding: 0.875rem 1.25rem;
+    text-align: start;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+  thead th {
+    background: var(--color-forest);
+    color: var(--color-on-dark);
+    font-family: var(--font-display);
+    font-size: var(--text-h6);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+  thead a { color: inherit; text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 0.3em; }
+  thead a:hover { color: var(--color-accent-on-dark); }
+  tbody th {
+    width: 14rem;
+    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+  }
+  td { color: var(--color-text); }
+  tbody tr:nth-child(even) > * { background: var(--color-parchment); }
+  tbody tr:last-child > * { border-bottom: 0; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

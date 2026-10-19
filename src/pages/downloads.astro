@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import DownloadsList from '../components/sections/DownloadsList.astro';
+---
+
+<Base
+  title="Downloads — AXI SOLAR Datasheets"
+  description="Download AXI SOLAR datasheets for solar panels, hybrid inverters and EV chargers, including archived panel models."
+>
+  <PageHero title="Datasheets & Downloads" crumbs={[{ label: 'Downloads' }]} image="/images/axi/manufacturing.webp" />
+  <DownloadsList />
+</Base>

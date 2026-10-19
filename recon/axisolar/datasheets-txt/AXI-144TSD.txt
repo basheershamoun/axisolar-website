@@ -1,0 +1,153 @@
+                                                                                                                                          www.axisolar.com
+
+
+AXI-144TSD
+  POWER RANGE
+   550W~580W
+
+     CELL SIZE
+       182*91mm
+
+
+
+
+                  JUNCTION BOX
+                  Waterproof protection grade:IP68                     16BB
+                  Safety Level: Class II
+                  Maximum System Voltage: 1500V
+                  outstanding waterproof level 、
+                  Effectively resist harsh environments
+
+
+
+
+                  Frame
+                  Strong mechanical load
+                  resistance up to 5400Pa
+                  Anodic oxidation layer resistant to
+                  chemical corrosion available
+                  in silver and black                                        SMBB Technology
+                                                                             Better light trapping and current collection to improve
+                                                                             module power output and reliability.
+
+QUALIFICATIONS AND CERTIFICATES
+                                                                             PID Resistance
+                                                                             Excellent Anti-PID performance guarantee via
+                                                                             optimized mass-production process and materials
+                                                                             control.
+
+                                                                             Higher Power Output
+                                                                             Module power increases 5-25% generally, bringing
+                                                                             significantly lower LCOE and higher IRR.
+
+
+·IEC61215 / · IEC61730                                                       Enhanced Mechanical Load
+                                                             2400 Pa         Certified to withstand: wind load (2400 Pascal) and snow
+                                                             5400 Pa
+                                                                             load (5400 Pascal).
+WARRANTY
+
+
+
+
+                                                                                                                             www.axisolar.com
+                                                          Introducing AXI solar, a solar industry pioneer known for groundbreaking innovation. Our panels redefine
+                                                          reliability, delivering optimal efficiency. With a focus on cutting-edge technology, we stand at the forefront
+                                                           of the solar revolution, offering a reliable, efficient, and sustainable energy solution.
+
+                                                          At AXI solar, sustainability is not just a goal; it's our ethos. From responsible sourcing to eco-friendly
+                                                          manufacturing, our commitment to minimizing environmental impact is unwavering. Choose AXI solar for solar
+                                                          panels that not only perform at the highest level but also contribute to a greener future.
+
+                                                          Join us on the journey to a sustainable tomorrow with AXI solar. Our solar panels ，embody a perfect
+                                                           blend of efficiency, innovation, and eco-conscious design. As a leader in the solar industry, we're dedicated
+                                                          to providing you with a reliable, cutting-edge, and environmentally responsible energy solution.
+ AXI-144TSD                                                                                                                                                www.axisolar.com
+     ELECTRICALDATA(STC)
+                                          AXI550-36V-TSD        AXI555-36V-TSD           AXI560-36V-TSD      AXI565-36V-TSD         AXI570-36V-TSD         AXI575-36V-TSD         AXI580-36V-TSD
+
+                                               550.00                  555.00                560.00               565.00                 570.00                575.00                  580.00
+
+                                                41.50                  41.64                   41.77              41.92                  42.07                   42.22                  42.37
+
+                                                13.26                  13.33                   13.41              13.48                  13.55                   13.62                  13.69
+
+                                             50.21±3%                50.34±3%             50.47±3%             50.60±3%               50.74±3%               50.88±3%                51.02±3%
+
+                                             14.00±3%                14.07±3%             14.15±3%             14.23±3%               14.31±3%               14.39±3%                14.47±3%
+
+                                                21.29                  21.48                   21.68              21.87                  22.07                   22.26                  22.45
+
+*STC: irradiance1000W/m², AM1.5, and cell temperature of 25℃
+
+
+     ELECTRICALDATA(NMOT)
+                                          AXI550-36V-TSD       AXI555-36V-TSD           AXI560-36V-TSD       AXI565-36V-TSD        AXI570-36V-TSD          AXI575-36V-TSD         AXI580-36V-TSD
+
+                                               413.00                  417.00                421.00               425.00                 429.00                433.00                  437.00
+
+                                                38.99                  39.12                   39.25              39.38                  39.51                   39.64                  39.77
+
+                                                10.61                  10.67                   10.73              10.79                  10.85                   10.91                  10.97
+
+                                             47.70±3%                47.82±3%             47.94±3%             48.06±3%               48.20±3%               48.32±3%                48.46±3%
+
+                                             11.30±3%                11.36±3%             11.42±3%             11.49±3%               11.55±3%               11.61±3%                11.68±3%
+*NMOT: irradiance 800W/m², AM1.5, ambient temperature 20°C, wind speed 1 m/s
+
+
+     ELECTRICALDATA(BNPI)
+                                          AXI550-36V-TSD        AXI555-36V-TSD           AXI560-36V-TSD     AXI565-36V-TSD          AXI570-36V-TSD         AXI575-36V-TSD         AXI580-36V-TSD
+
+                                               609.00                  615.00                620.00               626.00                 632.00                637.00                  643.00
+                                                               AXI
+                                                41.50                  41.64                   41.77              41.92                  42.07                   42.22                  42.37
+
+                                                14.69                  14.77                   14.86              14.94                  15.01                   15.09                  15.18
+
+                                             50.21±3%                50.34±3%             50.47±3%             50.60±3%               50.74±3%               50.88±3%                51.02±3%
+
+                                             15.51±3%                15.59±3%             15.68±3%             15.77±3%               15.86±3%               15.94±3%                16.03±3%
+*BNPI:back irradiance 135W/m2, AM1.5, and cell temperature of 25°C
+
+
+   PV DRAWINGS                                                                  TEMPERATURE & MAXIMUM RATING
+                                                                                Maximum System Voltage (V)                                           1500V
+                                                                                Maximum Series Fuse Rating (A)                                       30A
+                                                                                Power Tolerance                                                      0~+3W
+                                                                                PmaxTemperature Coefficient (W/℃)                                    -0.300%/℃
+                                                                                VocTemperature Coefficient (V/℃)                                     -0.250%/℃
+                                                                                IscTemperature Coefficient (A/℃)                                     +0.046%/℃
+                                                                                NMOT Nominal Module Operating Temperature （℃）                        45±2℃
+                                                                                Operatingand And Storage Temperature (℃)                             -40~+85℃
+
+
+                                                                                MECHANICAL CHARACTERISTICS
+                                                                                Cell Type                                              182*91 N Type Bifacial Mono
+
+                                                                                No. of Cells                                           144 (12*12)
+
+                                                                                Dimensions                                             2278*1134*30mm
+
+                                                                                Weight                                                 32.20kg
+                                                                                Front Glass                                            2.0mm AR coating tempered glass
+                                                                                Back Glass                                             2.0mm Glazed Glass
+                                                                                Frame                                                  Anodized Aluminum Alloy
+                                                                                Junction box                                           IP68 3 diodes
+                                                                                Output cables                                          4mm² cable 35cm (Including MC4 connector)
+                                                                                MaxWind Load/Snow Load                                 2400Pa/5400Pa
+
+
+                                                                                IV CURVE (570W)
+
+
+   PACKING WAY
+  20FT container                        5 Packages/185pcs
+  40HQ container                        20 Packages/740pcs                                                                                                               E-mail: info@axisolar.com
+                                                                                                                                                                         Web: www.axisolar.com
+                                                                                                                                                                         ⓒ Axi Solar All rights reserved.
+
+
+
+                                                            Specification included in this data-sheet are subject to change without notice
+

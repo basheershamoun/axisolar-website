@@ -1,0 +1,243 @@
+---
+/**
+ * Homepage portfolio showcase — four featured projects.
+ *
+ * Mirrors the original theme's `.project-item`: a tall 4:5 image with the
+ * title/category plate sliding up from the bottom edge on hover and the
+ * round link chip fading in. Only transform + opacity animate, so the whole
+ * hover stays on the compositor.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+
+interface Project {
+  title: string;
+  category: string;
+  slug: string;
+  image: string;
+}
+
+const projects: Project[] = [
+  { title: 'Photon Fusion',      category: 'Geothermal Energy', slug: 'photon-fusion',      image: '/images/project-8.jpg' },
+  { title: 'LuxSolar Dynamics',  category: 'Geothermal Energy', slug: 'luxsolar-dynamics',  image: '/images/project-7.jpg' },
+  { title: 'Solarburst Ventures', category: 'Solar Power',      slug: 'solarburst-ventures', image: '/images/project-6.jpg' },
+  { title: 'Sunworks Initiative', category: 'Geothermal Energy', slug: 'sunworks-initiative', image: '/images/project-5.jpg' },
+];
+---
+
+<section class="projects section" aria-label="Featured projects">
+  <div class="container-site">
+    <div class="projects__head">
+      <SectionHeading
+        eyebrow="Our projects"
+        title="Explore Our Recent Solar Projects"
+        as="h2"
+        class="projects__heading"
+      />
+      <div class="projects__cta" data-anim="up" data-anim-delay="0.2">
+        <Button href="/portfolio" variant="outline">View All Projects</Button>
+      </div>
+    </div>
+
+    <ul class="projects__grid">
+      {
+        projects.map((project, i) => (
+          <li class="projects__cell" data-anim="up" data-anim-delay={(i * 0.1).toFixed(2)}>
+            <article class="project">
+              <a class="project__link" href={`/portfolio/${project.slug}`}>
+                <span class="project__media">
+                  <img
+                    src={project.image}
+                    alt={`${project.title} — ${project.category} installation`}
+                    width="800"
+                    height="1000"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+
+                <span class="project__body">
+                  <span class="project__category">{project.category}</span>
+                  <h3 class="project__title">{project.title}</h3>
+                </span>
+
+                <span class="project__chip" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12L12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .projects { background: var(--color-bg); }
+
+  .projects__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 3.125rem;
+  }
+  .projects__head :global(.projects__heading) { flex: 1 1 28rem; }
+  .projects__cta { flex: 0 0 auto; }
+
+  .projects__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.875rem;
+  }
+
+  .project {
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-dark);
+    isolation: isolate;
+  }
+
+  .project__link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: inherit;
+    color: inherit;
+  }
+
+  .project__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .project__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  /* Scrim keeps the plate legible over bright panels without tinting the
+     whole photo. */
+  .project__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--color-overlay) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  .project__body {
+    position: absolute;
+    display: block;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    padding: 1.125rem 1.375rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    opacity: 0;
+    transform: translateY(calc(100% + 1.25rem));
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out);
+  }
+
+  .project__category {
+    display: block;
+    margin: 0 0 0.25rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+  .project__title {
+    margin: 0;
+    transition: color var(--dur-fast) var(--ease-out);
+    font-size: var(--text-h5);
+    color: var(--color-heading);
+  }
+  .project__link:hover .project__title { color: var(--color-primary); }
+
+  .project__chip {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .project__chip svg { width: 1rem; height: 1rem; }
+
+  .project__link:hover .project__media img,
+  .project__link:focus-visible .project__media img { transform: scale(1.08); }
+
+  .project__link:hover .project__media::after,
+  .project__link:focus-visible .project__media::after { opacity: 1; }
+
+  .project__link:hover .project__body,
+  .project__link:focus-visible .project__body {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .project__link:hover .project__chip,
+  .project__link:focus-visible .project__chip {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 991px) {
+    .projects__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 575px) {
+    .projects__grid { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+    .projects__head { margin-bottom: 2.25rem; }
+    /* No hover on touch — show the plate up front. */
+    .project__body {
+      position: static;
+      opacity: 1;
+      transform: none;
+      margin: 0;
+      border-radius: 0;
+    }
+  }
+
+  /* Touch devices can't hover: the plate must never be the only route to the
+     title, so it is pinned open. */
+  @media (hover: none) {
+    .project__body { opacity: 1; transform: translateY(0); }
+    .project__media::after { opacity: 1; }
+  }
+
+  /* Below 576px the body is static underneath the photo, so nothing sits over
+     the image — the scrim above would only mute every project shot. */
+  @media (max-width: 575.98px) {
+    .project__media::after { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project__media img,
+    .project__body,
+    .project__chip,
+    .project__media::after { transition: none; }
+  }
+</style>

@@ -1,0 +1,94 @@
+                                                             AXI VERO
+                                                 AXI VERO H3/H3.6/H5/H6 LV-1P
+                                            SINGLE PHASE & LV BATTERY HYBRID INVERTER
+
+
+     Excellent Performance                                 Highly Flexible
+• 200% usable PV power, up to 12 kW PV input         • Support 40-60V Lithium or Lead-acid battery
+• Max.20A+20A PV input current with 2 MPPTs          • Support generator/smart load/AC coupling
+• Max battery charge/discharge current of 140A       • Max. 9 units parallel for on-gird and off-gird operation
+• Max. grid passthrough current of 41A               • 3 inverters in parallel for three phase
+
+
+
+     Safe & Reliable                                       Intelligent Maintenance
+• IP66: Indoor or outdoor installation               • 4.3’’ LCD color touchscreen, easy to operate
+• Seamless transition to backup mode, for            • 6 time periods for battery charging/discharging
+protection against power outages                     • Built-in WiFi, supporting remote monitoring
+• Compact and lightweight                            and upgrade
+                                                      AXI VERO
+                              AXI VERO H3/H3.6/H5/H6 LV-1P
+
+                                     AXI VERO H3 LV-1P                 AXI VERO H3.6 LV-1P                         AXI VERO H5 LV-1P        AXI VERO H6 LV-1P
+                        Efficiency
+                   Max. Efficiency                                                                    97.3%
+                        Input (PV)
+           Max. PV Usable Power            6,000W                                    7,200W                                10,000W            12,000W
+           Max. PV Input Voltage                                                                      500V
+                                                                                                       90V
+                 Start-up Voltage
+                                                                                                    70V-450V
+            MPPT Voltage Range
+                                                                                                    20A/20A
+   Max. Input Current per MPPT                                                                       25A/25A
+  Max. Short Circuit Current per                                                                        2
+             No. of MPP Trackers                                                                       1/1
+              Input/Output (BAT)
+                     Battery Type                                                    Lithium-ion/Lead-acid
+         Nominal Battery Voltage                                                             48V
+          Battery Voltage Range                                                            40V-60V
+ Max. Charge/Discharge Current            75A/75A                                75A/75A                   110A/110A                          140A/140A
+  Max. Charge/Discharge Power         4,000W/4,000W                         4,000W/4,000W                5,500W/5,500W                      6,600W/6,600W
+             Input/Output (Grid)
+      Nominal AC Output Power              3,000W                                3,600W                                      5,000W             6,000W
+Max. AC Output Apparent Power              3,300VA                               3,960VA                                     5,500VA            6,600VA
+    Nominal AC Output Current         13.6A/13.0A/12.5A                    16.4A/15.7A/15.0A                            22.7A/21.7A/20.8A   27.3A/26.1A/25.0A
+ Max. Grid Passthrough Current                                                               41A
+                 Nominal Voltage                                                   220V/230V/240V, L+N+PE
+             Nominal Frequency                                                           50Hz/60Hz
+                    Power Factor                                        > 0.99 @rated power (Adjustable 0.8 LD - 0.8 LG)
+                              THDI                                                      < 3% @ R Load
+                 Output (Back up)
+      Nominal AC Output Power             3,000W                                 3,600W                       5,000W                             6,000W
+Max. AC Output Apparent Power             3,300VA                                3,960VA                      5,500VA                            6,600VA
+    Nominal AC Output Current         13.6A/13.0A/12.5A                       16.4A/15.7A/15.0A           22.7A/21.7A/20.8A                 27.3A/26.1A/25.0A
+   Peak Output Apparent Power                                                               200% @10s
+                 Nominal Voltage                                                     220V/230V/240V, L+N+PE
+             Nominal Frequency                                                              50Hz/60Hz
+                    Transfer Time                                                        < 10ms (Typical)
+                             THDV                                                          < 3% @ R Load
+                       Protection
+            Protection Category                                                                      Class I
+                        PV Switchl                                                                  Optional
+        Anti-islanding Protection                                                                     Yes
+          Overcurrent Protection                                                                      Yes
+          Overvoltage Protection                                                                      Yes
+     AC Short Circuit Protection                                                                      Yes
+  PV Reverse Polarity Protection                                                                      Yes
+                Surge Protection                                                                    Type III
+                          General
+         Max. Operation Altitude                                                       4,000m (>2,000m derating)
+  Operating Temperature Range                                                                -25°C~60°C
+                Relative Humidity                                                              0~100%
+       Ingress Protection Degree                                                                 IP66
+                  Cooling Method                                                            Smart Cooling
+                         Mounting                                                            Wall Bracket
+            Dimensions (W*H*D)                                                          367mm*421mm*215mm
+                            Weight                                                          Weight 11.5 kg
+                       HMI & COM
+                           Display                                                LED+LCD
+      Communication Interfaces                    RS485/CAN (for BMS), RS485, CAN (for parallel), 1*DO, 1*DI, Wi-Fi, LAN (Optional)
+                     Certification
+                            Safety                                                IEC/EN 62109-1/2
+                              EMC                                      IEC/EN 61000-6-1/2/3/4, IEC/EN 62920
+                          Grid IEC                                           IEC 61727/62116, IEC 61683
+                         Warranty                                                      5 Years
+                                     The range of output voltage and frequency may vary depending on different grid codes.
+                                     Specifications are subject to change without advanced notice.
+
+
+
+                                                                       © 2026 AXISolar All rights reserved.
+                                                  Note: Please read the safety and installation manual before using the product.
+                                                                        axisolar.com    info@axisolar.com
+

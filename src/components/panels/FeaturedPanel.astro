@@ -1,0 +1,103 @@
+---
+/** Featured current module on the Solar Panels landing: image + headline figures + actions. */
+import type { Product } from '../../data/products/types';
+import Button from '../ui/Button.astro';
+
+interface Props { product: Product; href: string }
+const { product, href } = Astro.props;
+---
+
+<article class="feat">
+  <div class="feat__media reveal-image">
+    <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
+  </div>
+  <div class="feat__body">
+    <p class="feat__eyebrow" data-anim="up">Current module</p>
+    <h2 class="feat__name" data-anim="up">{product.name}</h2>
+    <p class="feat__tagline" data-anim="up" data-anim-delay="0.05">{product.tagline}</p>
+    <p data-anim="up" data-anim-delay="0.1">{product.summary}</p>
+    <dl class="feat__stats" data-anim="up" data-anim-delay="0.15">
+      {product.highlights.map((h) => (
+        <div><dt>{h.label}</dt><dd>{h.value}</dd></div>
+      ))}
+    </dl>
+    <p class="feat__models" data-anim="up" data-anim-delay="0.2">
+      Models: {product.variants.join(', ')}
+    </p>
+    <div class="feat__actions" data-anim="up" data-anim-delay="0.25">
+      <Button href={href}>View specifications</Button>
+      {product.datasheet && (
+        <Button href={product.datasheet} variant="outline" download>Datasheet (PDF)</Button>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .feat {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+  }
+  /* Fixed-ratio box sizes before the image loads (no layout shift); the img
+     fills it and object-fit: contain keeps any cut-out ratio uncropped. */
+  .feat__media {
+    position: relative;
+    aspect-ratio: 1;
+    max-block-size: 34rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+  }
+  .feat__media img {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    padding: 2rem;
+    box-sizing: border-box;
+    object-fit: contain;
+  }
+  .feat__eyebrow {
+    margin-bottom: 0.5rem;
+    color: var(--color-accent-ink);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .feat__name { margin-bottom: 0.25rem; }
+  .feat__tagline { color: var(--color-heading); font-size: var(--text-lead); font-weight: var(--weight-medium); }
+  .feat__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: 1rem;
+    margin: 1.75rem 0 1rem;
+  }
+  .feat__stats div {
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    border-inline-start: 3px solid var(--color-accent);
+  }
+  .feat__stats dt { font-size: var(--text-sm); }
+  .feat__stats dd {
+    margin: 0;
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: var(--text-h5);
+    font-weight: var(--weight-bold);
+  }
+  .feat__models { font-size: var(--text-sm); margin-bottom: 1.5rem; }
+  .feat__actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+  @media (max-width: 991px) {
+    .feat { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }
+    .feat__media { max-block-size: 22rem; }
+  }
+</style>

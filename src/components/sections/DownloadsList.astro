@@ -1,0 +1,246 @@
+---
+/**
+ * Datasheet library — every product with a datasheet, grouped by line (and
+ * by status for panels). Works with empty product arrays.
+ *
+ * The filter is a set of toggle buttons (aria-pressed) that show/hide whole
+ * groups. It ships `hidden` and is revealed by the script, so without JS the
+ * page is simply the full grouped list.
+ */
+import { allProducts } from '../../data/products';
+import type { Product, ProductLine } from '../../data/products/types';
+import { site } from '../../data/site';
+import { lineLabel } from './lines';
+
+interface Group { id: string; title: string; note?: string; items: Product[] }
+interface LineGroup { line: ProductLine; label: string; groups: Group[] }
+
+const withSheet = allProducts.filter((p) => p.datasheet);
+const lines: ProductLine[] = ['panels', 'inverters', 'chargers'];
+
+const byLine: LineGroup[] = lines
+  .map((line) => {
+    const items = withSheet.filter((p) => p.line === line);
+    const groups: Group[] =
+      line === 'panels'
+        ? [
+            { id: 'panels-current', title: 'Current', items: items.filter((p) => p.status === 'current') },
+            {
+              id: 'panels-discontinued',
+              title: 'Archive',
+              note: 'Discontinued products, kept for existing installations.',
+              items: items.filter((p) => p.status === 'discontinued'),
+            },
+          ]
+        : [{ id: `${line}-all`, title: '', items }];
+    return { line, label: lineLabel(line), groups: groups.filter((g) => g.items.length > 0) };
+  })
+  .filter((l) => l.groups.length > 0);
+
+const range = (v: string[]) => (v.length > 1 ? `${v[0]} – ${v[v.length - 1]}` : v[0] ?? '');
+---
+
+<section class="section dl" aria-label="Datasheets">
+  <div class="container-site">
+    {
+      byLine.length === 0 ? (
+        <p class="dl__empty">
+          Datasheets are being added. Email <a href={`mailto:${site.email}`}>{site.email}</a> and we will send the
+          one you need.
+        </p>
+      ) : (
+        <>
+          <div class="dl__filter" role="group" aria-label="Filter datasheets by product line" data-dl-filter hidden>
+            <button type="button" aria-pressed="true" data-filter="all">All</button>
+            {byLine.map((l) => (
+              <button type="button" aria-pressed="false" data-filter={l.line}>{l.label}</button>
+            ))}
+          </div>
+
+          {byLine.map((l) => (
+            <section class="dl__line" aria-labelledby={`dl-${l.line}`} data-line={l.line}>
+              <h2 class="dl__line-title" id={`dl-${l.line}`}>{l.label}</h2>
+              {l.groups.map((g) => (
+                <div class="dl__group">
+                  {g.title && (
+                    <h3 class="dl__group-title">
+                      {g.title}
+                      {g.note && <span class="dl__group-note">{g.note}</span>}
+                    </h3>
+                  )}
+                  <ul class="dl__list">
+                    {g.items.map((p) => (
+                      <li class="dl__item" data-anim="up">
+                        <div class="dl__info">
+                          <p class="dl__name">
+                            {p.name}
+                            {p.status === 'discontinued' && <span class="dl__badge">Discontinued</span>}
+                          </p>
+                          {p.family && <p class="dl__family">{p.family}</p>}
+                          {p.variants.length > 0 && <p class="dl__variants">{range(p.variants)}</p>}
+                        </div>
+                        <a
+                          class="dl__link"
+                          href={p.datasheet}
+                          download
+                          aria-label={`Download ${p.name} datasheet (PDF)`}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                          PDF
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </section>
+          ))}
+          <p class="dl__count" role="status" aria-live="polite" data-dl-status></p>
+        </>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-dl-filter]');
+  if (bar) {
+    const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('button'));
+    const lines = Array.from(document.querySelectorAll<HTMLElement>('[data-line]'));
+    const status = document.querySelector<HTMLElement>('[data-dl-status]');
+    bar.hidden = false;
+
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        lines.forEach((sec) => (sec.hidden = f !== 'all' && sec.dataset.line !== f));
+        if (status) {
+          const n = lines.filter((s) => !s.hidden).reduce((acc, s) => acc + s.querySelectorAll('.dl__item').length, 0);
+          status.textContent = `Showing ${n} datasheet${n === 1 ? '' : 's'}${f === 'all' ? '' : ` for ${btn.textContent}`}.`;
+        }
+      }),
+    );
+  }
+</script>
+
+<style>
+  .dl__empty {
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: 2rem;
+    text-align: center;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-lg);
+  }
+  .dl__empty a, .dl__count { color: var(--color-accent-ink); }
+  .dl__empty a { text-decoration: underline; }
+
+  .dl__filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-end: 3rem;
+  }
+  .dl__filter[hidden] { display: none; }
+  .dl__filter button {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+    background: var(--color-bg-alt);
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .dl__filter button:hover { border-color: var(--color-accent); }
+  .dl__filter button[aria-pressed='true'] {
+    color: var(--color-on-dark);
+    background: var(--color-bg-dark);
+  }
+
+  .dl__line + .dl__line { margin-block-start: 4rem; }
+  .dl__line[hidden] { display: none; }
+  .dl__line-title {
+    padding-block-end: 1rem;
+    margin-block-end: 1.5rem;
+    border-block-end: 2px solid var(--color-accent);
+    font-size: var(--text-h3);
+  }
+  .dl__group + .dl__group { margin-block-start: 2.5rem; }
+  .dl__group-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    font-size: var(--text-h5);
+  }
+  .dl__group-note {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-body);
+    color: var(--color-text);
+  }
+
+  .dl__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+    gap: 1rem;
+  }
+  .dl__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .dl__item:hover { box-shadow: var(--shadow-card); }
+  .dl__info { min-width: 0; }
+  .dl__info p { margin: 0; }
+  .dl__name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h5);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+  }
+  .dl__badge {
+    padding: 0.125rem 0.625rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    color: var(--color-on-dark);
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-pill);
+  }
+  .dl__family { font-size: var(--text-sm); color: var(--color-accent-ink); }
+  .dl__variants { font-size: var(--text-sm); overflow-wrap: anywhere; }
+
+  .dl__link {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.125rem;
+    font-weight: var(--weight-medium);
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-radius: var(--radius-pill);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .dl__link svg { width: 1rem; height: 1rem; }
+  .dl__link:hover, .dl__link:focus-visible { background: var(--color-bg-dark); }
+
+  .dl__count { margin-block-start: 2rem; font-size: var(--text-sm); }
+  .dl__count:empty { display: none; }
+</style>

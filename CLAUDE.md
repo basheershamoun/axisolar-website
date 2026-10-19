@@ -114,6 +114,13 @@ public/datasheets/              # 15 PDFs
 - From the client: vector logos, hi-res product renders (HJT, inverter and charger images
   are 250–740px), corrected datasheets, certificate numbers.
 
+## Where work stands — read these first
+- **`recon/axisolar/OPEN-ISSUES.md`**: the backlog (decisions pending, client deliverables,
+  UI polish, later). Start here, and tick off or delete items as you finish them.
+- **`recon/axisolar/OWNER-CLARIFICATIONS.md`**: datasheet questions for the owner, generated
+  from every `toConfirm` note. After resolving notes in the data files, regenerate it or edit
+  it so the two stay in sync.
+
 ## Reference material (`recon/axisolar/`)
 - `CONTENT.md`: copy from the old axisolar.com. `shots/`, `pages/`: screenshots and HTML.
 - `datasheets/{panels,inverters,evoo-chargers}.md`: full datasheet extractions and their errors.

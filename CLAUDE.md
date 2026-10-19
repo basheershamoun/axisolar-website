@@ -1,73 +1,122 @@
-# Solor — Astro rebuild
+# AXI SOLAR — website
 
-A faithful rebuild of the Solor WordPress/Elementor theme
-(https://demo.awaikenthemes.com/solor/) in Astro + Tailwind v4, keeping the
-original's design and animation polish while dropping WordPress, jQuery and
-GSAP.
+Rebuild of **axisolar.com** for AXI SOLAR (Shamoun Power Group) on a re-skinned
+copy of the Solor Astro theme. It is a static B2B product catalogue covering solar
+panels, hybrid inverters and EV chargers.
 
-## Stack
-- **Astro 7** — static output, zero JS by default
-- **Tailwind v4** via `@tailwindcss/vite` (CSS-first config, no tailwind.config.js)
-- **Motion v13** (`motion`) — WAAPI-backed, replaces GSAP + ScrollTrigger + SplitType
-- Self-hosted fonts via Fontsource: **Rajdhani** (display) + **Rubik** (body)
+## Client brief
+- **Audience:** installers, distributors, engineers. **Markets:** Lebanon, Iraq, Syria.
+- **Tone:** technical, concise, factual. Specs and datasheets first, marketing second.
+- **Language:** English now. **Arabic (RTL) comes later** and is the primary target,
+  so write every new style with CSS logical properties (`margin-inline-start`,
+  `inset-inline`, `text-align: start`). Never use `left`/`right`.
+- **Contact:** `info@axisolar.com` plus an HTML form **only**. No phone, address, map
+  or socials anywhere. The datasheets list a Dongguan/China address; never publish it.
+- **No certification badges** and no cert claims until the client sends certificate
+  numbers. No invented stats, years, testimonials, warranties or claims.
 
-## Non-negotiable rules
+## Commands — Docker only, never Node on the host
+| Task | Command |
+|---|---|
+| Dev server → http://localhost:4321 | `make up` |
+| Production build → `dist/` | `make build` |
+| Build + preview | `make preview` |
+| Shell in container | `make shell` |
+| Reinstall deps | `make install` |
 
-### 1. Colours come from tokens. Always.
-Every colour, font, radius and duration lives in `src/styles/tokens.css` as a
-`:root` custom property. **Never hardcode a hex value in a component.**
-Use `var(--color-accent)`, `var(--font-display)`, `var(--radius-pill)`, etc.
-`src/styles/global.css` bridges these into Tailwind's `@theme`, so
-`bg-accent` / `text-heading` / `font-display` utilities resolve to the same
-variables. Adding a new colour means adding a token first.
+- `node_modules` lives in a named Docker volume; never bind-mount it.
+- **Run builds one at a time.** Parallel `docker compose run` builds on a nearly
+  full disk once corrupted Docker's image store.
+- If an agent needs a throwaway build, use `--outDir /app/.dist-<name>` and delete
+  it after. `/tmp` fails with `EXDEV` because it's on a different device from the bind mount.
 
-### 2. Styling approach
-Prefer a scoped `<style>` block in the `.astro` component using token vars.
-Tailwind utilities are fine for layout (`flex`, `grid`, `gap-*`).
-Do not invent new spacing scales — use `--section-py`, `--container-pad`.
+**`make build` must pass before you report done.**
 
-### 3. Animation
-Never import GSAP. Use the helpers in `src/lib/animations.ts`, driven by markup:
-- `data-anim="up|down|left|right|fade"` + optional `data-anim-delay="0.2"` — entrance
-- `class="reveal-image"` on a wrapper containing an `<img>` — the slide reveal
-- `<SplitText text="..." mode="words|chars" as="h2" />` — per-word/char heading reveal
-  (spans are generated at BUILD time — never split text at runtime)
-- `data-count-to="250"` — animated counter
-- `data-progress="85"` — animated bar, with `data-progress-label` on the % element
+## Product lines
+| Line | Route | Products | Data |
+|---|---|---|---|
+| Solar panels | `/solar-panels` | **AXI LUMEN** (current); AXI-144TSD + AXIHJT110 in `/solar-panels/archive` (discontinued) | `src/data/products/panels.ts` |
+| Hybrid inverters | `/inverters` | **VERO → NERO → FORZA**, always in this order | `inverters.ts` |
+| EV chargers | `/ev-chargers` | **AXI EVOO** AC I–IV, DC I, II, IV, V, VII | `chargers.ts` |
 
-All of it already respects `prefers-reduced-motion`. Keep it that way.
+**Logos:** panels and inverters use the main AXI SOLAR logo
+(`public/images/axi-logo.webp`, plus `-light` for dark backgrounds). EV chargers use the **AXI EVOO**
+logo (`public/images/brand/axi-evoo-logo*.webp`). Both are bitmaps; vectors are pending from the client.
 
-### 4. Accessibility
-Real landmarks, one `<h1>` per page, `alt` on every meaningful image,
-`aria-label` on icon-only controls, visible `:focus-visible`. Decorative SVGs get
-`aria-hidden="true"`.
+## Product data — the one place specs live
+Every product page, card, comparison table and the Downloads page is generated
+from `Product` records (`src/data/products/types.ts`). **Updating a datasheet =
+editing one record.** Never hardcode specs in a page.
 
-### 5. Images
-All assets are already downloaded to `public/images/`. Reference them as
-`/images/<name>.jpg`. **Do not hotlink the demo site.** Check the folder for what
-exists before inventing a filename. Add `loading="lazy"` + `decoding="async"` to
-below-the-fold images; the hero image stays eager with `fetchpriority="high"`.
+- `variants`: column headers (model codes or power classes). Each `SpecRow.values`
+  has one entry per variant, or a single value that spans all variants.
+- `status: 'discontinued'` → shows a badge, and the product is listed in the archive.
+- `datasheet` → `/datasheets/<slug>.pdf` (`public/datasheets/`, clean filenames).
+- **`toConfirm`** is internal only and is **never rendered**. It records every value we
+  corrected from a datasheet or that still needs the client's confirmation. When the
+  client sends updated sheets, work through these and delete each one once it's resolved.
+- Correction policy: fix the obvious (typos, swapped labels, wrong units). For anything
+  ambiguous, keep the spec-table value. Log both in `toConfirm`.
+- Line → route mapping for links: `src/components/sections/lines.ts`.
+
+## Design rules
+1. **Tokens only.** Colours, fonts, radii and durations live in `src/styles/tokens.css`.
+   Never put a hex value in a component. `global.css` bridges the tokens into Tailwind `@theme`.
+   - Brand palette: near-black + AXI red `#c42633`. Token names are inherited from the
+     theme: `--color-forest` = brand dark, `--color-lime`/`--color-accent` = brand red.
+   - **Red on dark fails AA for small text** (3.17:1). There, use `--color-accent-on-dark`.
+     Red fills take `--color-on-accent` (white) text.
+2. **Styling:** scoped `<style>` per component, using tokens. Tailwind is fine for layout
+   utilities. Use `--section-py` / `--container-pad` for spacing; no new scales.
+   Use `.sr-only` from `global.css`.
+3. **Animation:** never GSAP. Markup-driven helpers in `src/lib/animations.ts`:
+   - `data-anim="up|down|left|right|fade"` with optional `data-anim-delay`
+   - `.reveal-image` wrapper
+   - `<SplitText text mode="words|chars" as="h2" />` (split at build time)
+   - `data-count-to`
+   - `data-progress`
+   All respect `prefers-reduced-motion`. Keep it that way.
+4. **Accessibility:** one `<h1>` per page (`PageHero` or `ProductDetail` owns it), real
+   landmarks, `alt` on meaningful images, `aria-label` on icon-only controls, visible
+   `:focus-visible`, decorative SVGs `aria-hidden="true"`. Wide tables are focusable
+   scroll regions.
+5. **Images:** in `public/images/`: `axi/` (site photos), `products/<line>/` (transparent
+   cut-outs from the datasheets), `brand/`. Never hotlink axisolar.com. Below the fold:
+   `loading="lazy" decoding="async"`. Hero images: eager with `fetchpriority="high"`.
+   Product images sit in a fixed aspect-ratio box with `object-fit: contain`. A `%`
+   max-height does not work there, so the image fills the box absolutely.
 
 ## Layout
 ```
 src/
   components/
-    Header.astro  Footer.astro        # shared — do not edit without coordinating
-    ui/           Button, SectionHeading, SplitText
-    sections/     one file per page section
-  data/site.ts                        # nav, contact details, socials
-  layouts/Base.astro
+    Header.astro Footer.astro   # shared chrome — nav comes from data/site.ts
+    ui/                         # Button, PageHero, SectionHeading, SplitText
+    products/                   # ProductDetail, ProductCard, SpecTable (shared by all lines)
+    panels/ inverters/ chargers/  # line-specific pieces
+    sections/                   # home / about / contact / downloads / verify sections
+  data/
+    site.ts                     # name, email, nav, productLines
+    products/                   # types.ts + panels.ts, inverters.ts, chargers.ts, index.ts
+  layouts/Base.astro            # <head>, favicons, header/footer; `head` slot for extra meta
   lib/animations.ts
-  pages/
-  styles/         tokens.css  global.css
-public/images/                        # 52 assets pulled from the original
+  pages/                        # index, about, contact, downloads, verify, 404, + line folders
+  styles/tokens.css global.css
+public/datasheets/              # 15 PDFs
 ```
 
-## Reference material
-Full-page screenshots and saved HTML of the original are at:
-`/private/tmp/claude-502/-Users-bahaa-solar-theme-rebuild/7335fc40-a33b-445e-b396-ed265389afad/scratchpad/recon/`
-  - `shots/*.png`   — full-page screenshots at 1440px (read these, they are the spec)
-  - `pages/*.html`  — saved rendered HTML for exact copy
+## Open items (not built yet)
+- **Contact form endpoint:** `ContactForm.astro` posts to `https://formspree.io/f/REPLACE_ME`.
+  Until it's set, a submit tells the visitor to email us. Don't fake success.
+- **Product verification:** `/verify` is UI only. The serial DB exists on the client's
+  side; the lookup needs a small serverless function. Keep `name="product_serial"`.
+- **Arabic / RTL** version.
+- From the client: vector logos, hi-res product renders (HJT, inverter and charger images
+  are 250–740px), corrected datasheets, certificate numbers.
 
-## Verify your work
-`npm run build` must pass before you report done.
+## Reference material (`recon/axisolar/`)
+- `CONTENT.md`: copy from the old axisolar.com. `shots/`, `pages/`: screenshots and HTML.
+- `datasheets/{panels,inverters,evoo-chargers}.md`: full datasheet extractions and their errors.
+- `CLIENT-QUESTIONS.md`: questions sent to the client.
+- `recon/theme-archive/`: theme pages and sections we removed (blog, portfolio, team,
+  FAQs, services). Not built. Copy from here if one is needed again.
